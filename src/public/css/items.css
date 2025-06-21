@@ -1,0 +1,67 @@
+.tab-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.tabs {
+    display: flex;
+}
+
+.tab {
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #333;
+    border: 1px solid transparent;
+    border-bottom: none;
+    margin: 0 30px;
+    border-radius: 4px 4px 0 0;
+}
+
+.tab:hover {
+    background-color: #e0e0e0;
+}
+
+.tab.active {
+    background-color: #fff;
+    border-bottom: 2px solid white;
+    
+    color: red;
+}
+
+.tab-border {
+    width: 100vw;
+    border-bottom: 2px solid #ccc;
+    margin-bottom: 0;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+}
+
+.product-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    margin-top: 20px;
+}
+
+.product-card {
+    width: 220px;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    background-color: #fff;
+}
+
+.product-image {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.product-name {
+    text-align: left;
+    margin-top: 8px;
+}

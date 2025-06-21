@@ -1,0 +1,102 @@
+.body {
+    background-color: #FFFFFF;
+    font-family: 'Noto Sans JP', sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    background-color: #000;
+    padding: 16px 0;
+}
+
+.function-bar {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+}
+
+.logo-image img.logo-png {
+    height: 25px;
+    width: 100%;
+}
+
+.search-form {
+    display: flex;
+    width: 40%;
+}
+
+.search-form__input {
+    width: 100%;
+    padding: 8px 16px;
+    border-radius: 4px;
+}
+
+.link-set {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.login-btn,
+.logout-btn,
+.mypage-link {
+    color: white;
+    font-size: 16px;
+    text-decoration: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.sell-btn {
+    width: 100px;
+    height: 50;
+}
+.sell-btn__link {
+    margin-left: 12px;
+    background-color: #FFFFFF;
+    color: black;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+
+.sell-btn__link:hover {
+    background-color: #b0b0b0;
+}
+
+.main-container {
+    max-width: 1200px;
+    margin: 32px auto;
+    padding: 0 16px;
+    background-color: #FFFFFF;
+    color: #5f5f5f;
+    min-height: 400px;
+}
+
+/* メディアクエリでレスポンシブ対応 */
+
+@media screen and (min-width: 1400px) and (max-width: 1540px) {
+    .main-container {
+        padding: 0 48px;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 850px) {
+    .function-bar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .search-form {
+        width: 100%;
+        margin: 16px 0;
+    }
+}

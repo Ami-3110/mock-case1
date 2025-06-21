@@ -1,0 +1,214 @@
+.form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 30px;
+}
+
+.title {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #000000;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: #000000;
+}
+
+.image-space {
+    position: relative;
+    height: 150px;
+    border: 1px dotted #5F5F5F;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.custom-file-button {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: white;
+    border: 2px solid red;
+    color: red;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    user-select: none;
+    text-align: center;
+    font-size: 14px;
+}
+.custom-file-button:hover {
+    background-color: red;
+    color: white;
+}
+
+.image-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+}
+
+.custom-file-button {
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.custom-file-button.hidden {
+    display: none !important;
+}
+
+.remove-image {
+    position: absolute;
+    top: 6px;
+    /* 少し調整 */
+    right: 6px;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    font-size: 18px;
+    /* 少し大きめに */
+    line-height: 24px;
+    /* 縦中央に */
+    text-align: center;
+    padding: 0;
+    user-select: none;
+    z-index: 2;
+}
+
+.product-detail {
+    color: #5f5f5f;
+    font-size: 18px;
+    font-weight: bold;
+    border-bottom: #5F5F5F solid 1px;
+    margin-bottom: 15px;
+}
+
+
+.category-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.checkbox-tag {
+    cursor: pointer;
+    display: inline-block;
+    margin: 4px;
+}
+
+.hidden-checkbox {
+    display: none;
+}
+
+.tag {
+    display: inline-block;
+    padding: 6px 16px;
+    border: 1px solid #e60033;
+    border-radius: 999px;
+    font-size: 13px;
+    color: #e60033;
+    background-color: #fff;
+    transition: all 0.2s ease-in-out;
+}
+
+.hidden-checkbox:checked+.tag {
+    background-color: #e60033;
+    color: #fff;
+    border-color: #e60033;
+}
+
+.condition {
+    width: 100%;
+    border: 1.5px solid #B1B1B1;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+
+.product_name,
+.brand,
+.description,
+.price {
+    width: 100%;
+    padding: 10px;
+    border: 1.5px solid #B1B1B1;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+
+.submit-button {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+}
+
+.submit-button:hover {
+    background-color: #c0392b;
+}
+
+/* Choices.js カスタム */
+.choices[data-type*='select-one'] .choices__inner {
+    padding: 10px 10px;
+    background-color: #ffffff;
+    color: #636769;
+    border-radius: 6px;
+    border: 1.5px solid #B1B1B1;
+    font-size: 12px;
+    box-sizing: border-box;
+}
+
+/* ドロップダウン中の選択肢項目 */
+.choices__list .choices__item--choice.choices__item--selectable {
+    position: relative;
+    padding-left: 28px !important;
+    box-sizing: border-box;
+    background-color: #5F5F5F;
+    color: #ffffff;
+    z-index: 1;
+}
+
+/* ハイライト時（ホバー）に ✔︎ を表示 */
+.choices__list--dropdown .choices__item--selectable.is-highlighted {
+    background-color: #5599EB !important;
+    color: #ffffff;
+    border-radius: 4px;
+}
+
+/* ✔︎アイコン */
+.choices__list .choices__item--choice.choices__item--selectable::before {
+  content: "✔︎";
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-weight: bold;
+  color: transparent;
+}
+
+/* ハイライト中 or 選択中のときだけ✔︎を見せる */
+.choices__list .choices__item--choice.choices__item--selectable.is-highlighted::before {
+  color: #ffffff;
+}
+
+
+
