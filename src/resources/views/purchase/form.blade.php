@@ -18,7 +18,8 @@
         {{-- 支払い方法 --}}
         <div class="form-group">
             <label for="payment-method">支払い方法</label>
-            <select name="payment_method" id="payment-method" required>
+            <select name="payment_method" id="payment-method">
+                <option value="">選択してください</option>
                 <option value="コンビニ払い" {{ old('payment_method') === 'コンビニ払い' ? 'selected' : '' }}>コンビニ払い</option>
                 <option value="カード支払い" {{ old('payment_method') === 'カード支払い' ? 'selected' : '' }}>カード支払い</option>
             </select>
@@ -47,8 +48,7 @@
             <tr>
                 <th>支払い方法</th>
                 <td>
-                    {{-- 選択した支払い方法をJSなどで表示したい場合、ここに動的表示 --}}
-                    <span id="selected-payment-method">未選択</span>
+                    <span id="selected-payment-method"></span>
                 </td>
             </tr>
         </table>
@@ -57,16 +57,23 @@
     </form>
 </div>
 
-{{-- JavaScriptで選択中の支払い方法を表示（オプション） --}}
+{{-- 選択中の支払い方法を即時表示 --}}
 <script>
     const select = document.getElementById('payment-method');
     const display = document.getElementById('selected-payment-method');
-    if (select && display) {
-        display.textContent = select.value;
-        select.addEventListener('change', () => {
+
+    select.addEventListener('change', () => {
+        if (select.value === "") {
+            display.textContent = ""; // 
+        } else {
             display.textContent = select.value;
-        });
+        }
+    });
+
+    if (select.value !== "") {
+        display.textContent = select.value;
     }
+
 </script>
 @endsection
 

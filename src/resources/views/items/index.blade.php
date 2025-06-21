@@ -15,7 +15,6 @@
     <div class="tab-content">
         @if ($activeTab === 'recommend')
         @elseif ($activeTab === 'mylist')
-            <p>マイリスト（いいねした商品）を表示中</p>
         @endif
     </div>
     
