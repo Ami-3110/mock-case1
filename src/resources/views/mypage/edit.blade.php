@@ -32,7 +32,11 @@
             @endif
 
             <input type="file" name="user_image" id="profile_image" class="form-input" accept="image/*">
-            @error('profile_image')<div class="error">{{ $message }}</div>@enderror
+            @error('profile_image')<div class="error">{{ $message }}</div>
+            @enderror
+            @error('profile_image')
+            <div class="error">{{ $message }}</div>
+            @enderror
         </div>
 
 
@@ -40,21 +44,27 @@
         <div class="form-group">
             <label for="postal_code">郵便番号</label>
             <input type="text" name="postal_code" id="postal_code" class="form-input" value="{{ old('postal_code', $user->userProfile->postal_code ?? '') }}">
-            @error('postal_code')<div class="error">{{ $message }}</div>@enderror
+            @error('postal_code')
+            <div class="error">{{ $message }}</div>
+            @enderror
         </div>
 
         {{-- 住所 --}}
         <div class="form-group">
             <label for="address">住所</label>
             <input type="text" name="address" id="address" value="{{ old('address', $user->userProfile->address ?? '') }}" class="form-input">
-            @error('address')<div class="error">{{ $message }}</div>@enderror
+            @error('address')
+            <div class="error">{{ $message }}</div>
+            @enderror
         </div>
 
         {{-- 建物名 --}}
         <div class="form-group">
             <label for="building">建物名</label>
             <input type="text" name="building" id="building" value="{{ old('building', $user->userProfile->building ?? '') }}" class="form-input">
-            @error('building')<div class="error">{{ $message }}</div>@enderror
+            @error('building')
+            <div class="error">{{ $message }}</div>
+            @enderror
         </div>
 
         <button type="submit" class="edit-button">更新する</button>

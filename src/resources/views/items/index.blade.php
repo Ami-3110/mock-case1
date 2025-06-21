@@ -35,9 +35,17 @@
             <div class="product-card">
                 <a href="{{ route('item.show', ['item_id' => $product->id]) }}">
                     <img src="{{ asset('storage/' . $product->product_image) }}" alt="商品画像" class="product-image">
-                    <p class="product-name">{{ $product->product_name }}</p>
+            
+                    <div class="product-info-row">
+                        <p class="product-name">{{ $product->product_name }}</p>
+            
+                        @if ($product->is_sold)
+                            <span class="sold-label">sold</span>
+                        @endif
+                    </div>
                 </a>
             </div>
+            
             @endif
         @endforeach
     </div>

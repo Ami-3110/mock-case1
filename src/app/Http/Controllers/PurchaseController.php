@@ -10,6 +10,7 @@ use App\Models\UserProfile;
 use App\Models\Comment;
 use App\Models\Like;
 use App\Models\User;
+use App\Http\Requests\PurchaseRequest;
 
 class PurchaseController extends Controller
 {
@@ -33,7 +34,7 @@ class PurchaseController extends Controller
 
 
 // 購入処理
-    public function purchase(Request $request, $item_id)
+    public function purchase(PurchaseRequest $request, $item_id)
     {
         $validated = $request->validate([
             'payment_method' => 'required|string|in:コンビニ払い,カード支払い',
@@ -90,14 +91,8 @@ class PurchaseController extends Controller
 
 
     // 住所変更処理(POST)
-    public function updateAddress(Request $request, $item_id){
-        $validated = $request->validate([
-            'ship_postal_code' => 'required|string|max:10',
-            'ship_address'     => 'required|string|max:255',
-            'ship_building'    => 'nullable|string|max:255',
-        ]);
-
-        // セッションに保存
+    public function updateAddress(PurchaseRequest $request, $item_id){
+        $validated = $request->validated();
         session([
             'shipping_address_' . $item_id => $validated
         ]);

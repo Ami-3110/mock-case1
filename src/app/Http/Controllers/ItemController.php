@@ -11,6 +11,7 @@ use App\Models\Comment;
 use App\Models\Like;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\ExhibitionRequest;
 
 
 class ItemController extends Controller
@@ -42,8 +43,6 @@ class ItemController extends Controller
             'activeTab' => $tab,
         ]);
     }
-    
-
 
     // 商品検索
     public function search(Request $request){
@@ -73,7 +72,7 @@ class ItemController extends Controller
     }
 
     // 出品処理
-    public function store(Request $request){
+    public function store(ExhibitionRequest $request){
         $path = $request->file('product_image')->store('products', 'public');
         $product = Product::create([
             'user_id' => Auth::id(),
@@ -88,7 +87,7 @@ class ItemController extends Controller
 
         $product->categories()->sync($request->category_ids);
 
-        return redirect('/mypage?tab=sell')->with('success', '商品を出品しました！');
+        return redirect('/mypage?tab=sell');
     }
 
 

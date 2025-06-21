@@ -10,15 +10,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use App\Http\Requests\RegisterRequest;
 
 class RegisteredUserController extends Controller
 {
-    public function create()
-    {
+    // 会員登録フォーム表示
+    public function create(){
         return view('auth.register');
     }
 
-    public function store(Request $request){
+    // 会員登録処理
+    public function store(RegisterRequest $request){
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -29,6 +31,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect('/mypage/profile'); // ← プロフィール編集ページへリダイレクト
+        return redirect('/mypage/profile');
     }
 }

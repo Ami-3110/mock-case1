@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Fortify\Fortify;
+use App\Http\Requests\LoginRequest;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -15,20 +16,17 @@ class AuthenticatedSessionController extends Controller
      }
 
     // ログイン処理
-    public function store(Request $request){
-        $credentials = $request->validate([
-            Fortify::username() => 'required|string',
-            'password' => 'required|string',
-        ]);
+    public function store(LoginRequest $request){
+        $credentials = $request->only(Fortify::username(), 'password');
         if (Auth::attempt($credentials, $request->filled('remember'))) {
             $request->session()->regenerate();
-            // ここでログイン後のリダイレクト先を指定
-            return redirect()->intended('/'); 
+            return redirect()->intended('/');// どこからログインしてもトップページが良ければreturn redirect('/');にしてください。
         }
         return back()->withErrors([
-            Fortify::username() => __('auth.failed'),
+            'login_error' => 'ログイン情報が登録されていません。',
         ]);
     }
+
 
     // ログアウト処理
     public function destroy(Request $request)

@@ -23,7 +23,11 @@
                 <button class="remove-image" type="button" id="remove-image" 
                 style="{{ old('product_image') ? '' : 'display:none;' }} position:absolute; top:4px; right:4px;">×</button>
             </div>
+            @error('product_image')
+            <div class="error">{{ $message }}</div>
+            @enderror
         </div>
+
 
         <div class="product-detail">商品の詳細</div>
 
@@ -38,6 +42,9 @@
                     </label>
                 @endforeach
             </div>
+            @error('category')
+            <div class="error">{{ $message }}</div>
+            @enderror
         </div>
 
         {{-- 商品の状態 --}}
@@ -49,12 +56,18 @@
                 <option value="やや傷や汚れあり" {{ old('condition') === 'やや傷や汚れあり' ? 'selected' : '' }}>やや傷や汚れあり</option>
                 <option value="状態が悪い" {{ old('condition') === '状態が悪い' ? 'selected' : '' }}>状態が悪い</option>
             </select>
+            @error('condition')
+            <div class="error">{{ $message }}</div>
+            @enderror
         </div>
 
         {{-- 商品名 --}}
         <div class="form-group">
             <label class="label" for="product_name">商品名</label>
             <input class="product_name" type="text" id="product_name" name="product_name" value="{{ old('product_name') }}">
+            @error('product_name')
+            <div class="error">{{ $message }}</div>
+            @enderror
         </div>
 
         {{-- ブランド名 --}}
@@ -67,12 +80,18 @@
         <div class="form-group">
             <label class="label" for="description">説明</label>
             <textarea class="description" id="description" name="description" rows="4">{{ old('description') }}</textarea>
+            @error('description')
+            <div class="error">{{ $message }}</div>
+            @enderror
         </div>
 
         {{-- 価格 --}}
         <div class="form-group">
             <label class="label" for="price">販売価格</label>
             <input type="number" class="price" name="price" value="{{ old('price') }}">
+            @error('price')
+            <div class="error">{{ $message }}</div>
+            @enderror
         </div>
 
         <button type="submit" class="submit-button">出品する</button>

@@ -8,22 +8,24 @@
 <div class="auth-form">
     <h2>ログイン</h2>
 
-    @if ($errors->any())
-        <div class="error-messages">
-            @foreach ($errors->all() as $error)
-                <p>{{ $error }}</p>
-            @endforeach
-        </div>
+    @if ($errors->has('login_error'))
+        <p class="error-message">{{ $errors->first('login_error') }}</p>
     @endif
 
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
         <label for="email">メールアドレス</label>
-        <input type="email" name="email" id="email" required>
+        <input type="email" name="email" id="email">
+        @error('email')
+        <div class="error">{{ $message }}</div>
+        @enderror
 
         <label for="password">パスワード</label>
-        <input type="password" name="password" id="password" required>
+        <input type="password" name="password" id="password">
+        @error('password')
+        <div class="error">{{ $message }}</div>
+        @enderror
 
         <button type="submit">ログイン</button>
     </form>

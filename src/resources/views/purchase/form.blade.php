@@ -23,7 +23,7 @@
                 <option value="カード支払い" {{ old('payment_method') === 'カード支払い' ? 'selected' : '' }}>カード支払い</option>
             </select>
             @error('payment_method')
-                <p class="error-message">{{ $message }}</p>
+            <p class="error-message">{{ $message }}</p>
             @enderror
         </div>
 
