@@ -18,8 +18,12 @@
         
         
         <div class="profile-info">
-            <h2 class="username">{{ $user->user_name }}</h2>
-            <a href="{{route('mypage.edit') }}" class="edit-profile-btn">プロフィールを編集</a>
+            <div class="profile-left">
+                <h2 class="username">{{ $user->user_name }}</h2>
+            </div>
+            <div class="profile-right">
+                <a href="{{route('mypage.edit') }}" class="edit-profile-btn">プロフィールを編集</a>
+            </div>
         </div>
     </div>
 

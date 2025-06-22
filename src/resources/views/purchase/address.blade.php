@@ -7,7 +7,7 @@
 
 
 <div class="address-edit-container">
-    <h2>配送先住所の変更</h2>
+    <h2>住所の変更</h2>
 
     <form action="{{ route('purchase.updateAddress', ['item_id' => $item->id]) }}" method="POST">
         @csrf

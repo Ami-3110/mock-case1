@@ -6,87 +6,96 @@
 @section('content')
 <div class="item-container">
     <div class="item-information">
-        <img src="{{ asset('storage/' . $item->product_image) }}" alt="商品画像" class="product-image">
+        <div class="item-wrapper">
+            <div class="left-column">
+                <img src="{{ asset('storage/' . $item->product_image) }}" alt="商品画像" class="product-image">
+            </div>
 
-        {{-- 商品名・ブランド・値段 --}}
-        <h1 class="product_name">{{ $item->name }}</h1>
-        <div class="brand">{{ $item->brand }}
-        <div class="price">¥{{ number_format($item->price) }}<p class="price-addition">（税込）</p></div>
+            <div class="right-column">
+                {{-- 商品名・ブランド・値段 --}}
+                <h1 class="product_name">{{ $item->product_name }}</h1>
+                <div class="brand">{{ $item->brand }}</div>
+                <div class="price">¥{{ number_format($item->price) }}<p class="price-addition">（税込）</p></div>
 
-        {{-- いいね機能／コメント数 --}}
-        <div class="like-comment-area">
-            <div class="like-mark">
+                <div class="icon-group">
+                    {{-- いいね --}}
+                    <div class="icon-block">
+                        <form action="{{ $isLiked ? route('like.destroy', ['product' => $item->id]) : route('like.store', ['product' => $item->id]) }}" method="POST">
+                            @csrf
+                            @if ($isLiked)
+                                @method('DELETE')
+                            @endif
+                            <button type="submit" class="icon-button" aria-label="{{ $isLiked ? 'いいねを解除' : 'いいねする' }}">
+                                <img src="{{ asset('images/like.png') }}" alt="いいねアイコン" class="icon-img">
+                            </button>
+                        </form>
+                        <span class="icon-count">{{ $item->likes_count ?? $item->likes->count() }}</span>
+                    </div>
                 
-                <form action="{{ $isLiked ? route('like.destroy', ['product' => $item->id]) : route('like.store', ['product' => $item->id]) }}" method="POST">
+                    {{-- コメント --}}
+                    <div class="icon-block">
+                        <img src="{{ asset('images/comment.png') }}" alt="コメントアイコン" class="icon-img">
+                        <span class="icon-count">{{ $item->comments_count ?? 0 }}</span>
+                    </div>
+                </div>
+
+                {{-- 購入ボタン --}}
+                <a href="{{ route('purchase.showForm', ['item_id' => $item->id]) }}"
+                class="purchase-btn">
+                    購入手続きへ
+                </a>
+            
+                {{-- 商品説明 --}}
+                <div class="item-heading">商品説明</div>
+                <p class="description">{{ $item->description }}</p>
+
+                {{-- 商品情報 --}}
+                <div class="item-heading">商品の情報</div>
+                    {{-- カテゴリー --}}
+                    <div class="item-attribute-row">
+                        <div class="item-attribute">カテゴリー</div>
+                        <div class="item-categories">
+                            @foreach ($item->categories as $category)
+                                <span class="category-tag">{{ $category->category_name }}</span>
+                            @endforeach
+                        </div>
+                    </div>
+                    {{-- 状態 --}}
+                    <div class="item-attribute-row">
+                        <div class="item-attribute">商品の状態</div>
+                            <p class="condition">{{ $item->condition }}</p>
+                    </div>
+
+                {{-- コメント一覧 --}}
+                <div class="item-heading">コメント（{{ $item->comments_count ?? 0 }}）</div>
+                @forelse ($item->comments as $comment)
+                    <div class="comment-user">
+                        @if ($comment->user->userProfile && $comment->user->userProfile->profile_image)
+                            <img src="{{ asset('storage/' . $comment->user->userProfile->profile_image) }}" alt="プロフィール画像" class="comment-user-image">
+                        @else
+                            <div class="default-comment-image"></div>
+                        @endif
+                        <p class="comment-name">{{ $comment->user->user_name }}</p>
+                    </div>
+                    <div class="comment-content">{{ $comment->comment }}</div>
+                @empty
+                    <div class="no-comments-yet">まだコメントはありません。</div>
+                @endforelse
+
+                {{-- コメント投稿フォーム --}}
+                <div class="item-attribute">商品へのコメント</div>
+                <form action="{{ route('comments.store', ['item' => $item->id]) }}" method="POST">
                     @csrf
-                    @if ($isLiked)
-                        @method('DELETE')
-                    @endif
-                    <button type="submit" aria-label="{{ $isLiked ? 'いいねを解除' : 'いいねする' }}">
-                        {{ $likeSymbol }}
-                    </button>
-                </form>
-
-
-                <span class="likes-count">{{ $item->likes_count ?? $item->likes->count() }}</span>
+                    <textarea name="comment" class="comment-form" placeholder="">{{ old('comment') }}</textarea>
+                    @error('comment')
+                        <p class="comment_error">{{ $message }}</p>
+                    @enderror
+                    <button type="submit" class="comment-btn">コメントを送信する</button>
+                </form>        
+                </div>
             </div>
-        </div>
-
-            <span class="comment-mark">コメントマーク{{ $item->comments_count ?? 0 }}</span>
-        </div>
-
-        {{-- 購入ボタン --}}
-        <a href="{{ route('purchase.showForm', ['item_id' => $item->id]) }}"
-           class="purchase-btn">
-            購入手続きへ
-        </a>
-    
-        {{-- 商品説明 --}}
-        <div class="item-heading">商品説明</div>
-        <p class="description">{{ $item->description }}</p>
-
-        {{-- 商品情報 --}}
-        <div class="item-heading">商品の情報</div>
-            {{-- カテゴリー --}}
-            <div class="item-attribute">カテゴリー
-                <p class="item-categories">
-                    @foreach ($item->categories as $category)
-                        {{ $category->category_name }}{{ !$loop->last ? ' / ' : '' }}
-                    @endforeach
-                </p>
-            </div>
-            {{-- 状態 --}}
-            <div class="item-attribute">商品の状態
-                <p class="condition">{{ $item->condition }}</p>
-            </div>
-
-        {{-- コメント一覧 --}}
-        <div class="item-heading">コメント（{{ $item->comments_count ?? 0 }}）</div>
-        @forelse ($item->comments as $comment)
-            <div class="comment-user">
-                @if ($comment->user->userProfile && $comment->user->userProfile->profile_image)
-                    <img src="{{ asset('storage/' . $comment->user->userProfile->profile_image) }}" alt="プロフィール画像" class="comment-user-image">
-                @else
-                    <div class="default-comment-image"></div>
-                @endif
-                <p class="comment-name">{{ $comment->user->user_name }}</p>
-            </div>
-            <div class="comment-content">{{ $comment->comment }}</div>
-        @empty
-            <div class="no-comments-yet">まだコメントはありません。</div>
-        @endforelse
-
-        {{-- コメント投稿フォーム --}}
-        <div class="item-attribute">商品へのコメント</div>
-        <form action="{{ route('comments.store', ['item' => $item->id]) }}" method="POST">
-            @csrf
-            <textarea name="comment" class="comment-form" placeholder="">{{ old('comment') }}</textarea>
-            @error('comment')
-                <p class="comment_error">{{ $message }}</p>
-            @enderror
-            <button type="submit" class="comment-btn">コメントを送信する</button>
-        </form>        
         </div>
     </div>
+</div>
 </div>
 @endsection

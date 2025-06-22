@@ -7,36 +7,35 @@
 @section('content')
 <div class="profile-edit-container">
     <h2>プロフィール設定</h2>
-
+    
     <form method="POST" action="{{ route('mypage.updateProfile') }}" enctype="multipart/form-data">
         @csrf
 
+        
+
+        {{-- プロフィール画像 --}}
+        <div class="form-group profile-image-edit-area">
+            <div class="profile-image-wrapper">
+                @if ($user->userProfile && $user->userProfile->profile_image)
+                    <img src="{{ asset('storage/' . $user->userProfile->profile_image) }}?v={{ time() }}" alt="プロフィール画像" class="profile-image">
+                @else
+                    <div class="default-image-circle">No Image</div>
+                @endif
+            </div>
+        
+            <label for="profile_image" class="custom-file-label">画像を選択する</label>
+            <input type="file" name="user_image" id="profile_image" class="file-input" accept="image/*">
+            
+            @error('profile_image')
+                <div class="error">{{ $message }}</div>
+            @enderror
+        </div>        
+
          {{-- ユーザー名 --}}
-        <div class="form-group">
+         <div class="form-group">
             <label for="user_name">ユーザー名</label>
             <input type="text" name="user_name" id="user_name" value="{{ old('user_name', $user->user_name) }}" class="form-input">
             @error('user_name')<div class="error">{{ $message }}</div>@enderror
-        </div>
-
-        {{-- プロフィール画像 --}}
-        <div class="form-group">
-            <label for="profile_image">プロフィール画像</label>
-
-            @if ($user->userProfile && $user->userProfile->profile_image)
-                <div>
-                    {{-- 確実に正しいパスで表示 --}}
-                    <img src="{{ asset('storage/' . $user->userProfile->profile_image) }}?v={{ time() }}" alt="プロフィール画像" width="100" style="border: 1px solid red;">
-                </div>
-            @else
-                <div class="default-image-circle">No Image</div>
-            @endif
-
-            <input type="file" name="user_image" id="profile_image" class="form-input" accept="image/*">
-            @error('profile_image')<div class="error">{{ $message }}</div>
-            @enderror
-            @error('profile_image')
-            <div class="error">{{ $message }}</div>
-            @enderror
         </div>
 
 

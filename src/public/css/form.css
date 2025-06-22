@@ -1,32 +1,138 @@
 .purchase-form-container {
-    max-width: 600px;
+    display: flex;
+    flex-direction: row;
+    max-width: 1000px;
     margin: 0 auto;
+    padding: 40px 20px;
+    gap: 40px;
 }
 
-.product-info {
-    margin-bottom: 20px;
+.form-left {
+    width: 66.66%;
 }
 
-.product-image {
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 5px;
+.product-summary .label {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 5px;
 }
 
-.error-message {
-    color: red;
-    font-size: 0.9em;
+.product-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
 }
 
+.product-summary .product-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin: 0;
+}
+
+.product-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.product-summary .product-name {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.product-summary .price {
+    font-size: 18px;
+    font-weight: lighter;
+    margin-bottom: 2px;
+}
+
+/* 共通フォームスタイル */
+.form-group {
+    margin: 20px 20px;
+}
+
+.form-group label {
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.selectbox {
+    width: 60%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin: 20px 50px;
+}
+
+.form-label-with-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form-label-with-link a {
+    font-size: 14px;
+    text-decoration: underline;
+    color: #007BFF;
+}
+
+.shipping-info {
+    font-size: 14px;
+    font-weight: bold;
+    color: #555;
+    margin: 10px 50px;
+    line-height: 1.0;
+}
+
+.form-right {
+    width: 33.33%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 30px;
+}
+
+.summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ccc;
+    overflow: hidden;
+}
+.summary-table th,
+.summary-table td {
+    padding: 35px 12px;
+    text-align: left;
+    font-size: 14px;
+    font-weight: normal;
+    color: #333;
+    border-bottom: 1px solid #ccc;
+}
+
+
+/* 購入ボタン */
 .btn-submit {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 20px;
+    padding: 12px;
+    width: 100%;
+    background-color: #f44336;
+    color: #fff;
+    font-size: 16px;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
 }
 
 .btn-submit:hover {
-    background-color: #0056b3;
+    background-color: #d32f2f;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 30px 0;
 }

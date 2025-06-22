@@ -1,0 +1,61 @@
+.address-edit-container {
+    max-width: 600px;
+    margin: 60px auto;
+    padding: 40px;
+    background-color: #fff;
+}
+
+.address-edit-container h2 {
+    font-size: 22px;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+/* フォームグループ全体 */
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+/* エラーメッセージ */
+.error-message {
+    color: red;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+/* 送信*/
+.btn-submit {
+    width: 100%;
+    padding: 12px;
+    background-color: #f44336;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover {
+    background-color: #d32f2f;
+    /* ホバー時の濃い赤 */
+}

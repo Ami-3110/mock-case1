@@ -8,14 +8,18 @@
     gap: 20px;
     width: 70%;
     height: 150px;
-    margin: 10px 160px ;
+    margin: 10px 60px;
 }
 
 .profile-image-wrapper {
     width: 150px;
     height: 150px;
+    flex-shrink: 0;
     border-radius: 50%;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .profile-image {
@@ -33,23 +37,41 @@
 
 .profile-info {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    width: 620px;
+    position: relative;
+    margin-left: 50px;
+}
+
+.profile-left {
+    flex-shrink: 0;
 }
 
 .username {
     font-size: 20px;
+    margin: 0;
+}
+
+.profile-right {
+    position: absolute;
+    right: -110px;
+    /* ← これでログアウトボタンの手前くらいに */
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .edit-profile-btn {
     display: inline-block;
     background-color: #FFFFFF;
     color: red;
-    padding: 8px 16px;
+    padding: 8px 25px;
     border-radius: 8px;
     text-decoration: none;
     font-weight: bold;
     border: 1px solid red;
+    white-space: nowrap;
+    margin-left: auto;
 }
 
 .tabs {
