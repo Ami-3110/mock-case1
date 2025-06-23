@@ -61,7 +61,25 @@
     border-radius: 4px;
 }
 
+.product-info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+}
+
 .product-name {
     text-align: left;
-    margin-top: 8px;
+    margin: 0;
+    flex: 1;
+    font-size: 14px;
+    text-decoration-line: none !important;
+    color: #000000;
+}
+
+.sold-label {
+    color: red;
+    font-weight: bold;
+    font-size: 12px;
+    white-space: nowrap;
 }

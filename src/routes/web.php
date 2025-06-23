@@ -54,8 +54,8 @@ use App\Http\Controllers\CommentController;
         // 購入フォーム表示（商品詳細→購入確認）
         Route::get('/purchase/{item_id}', [PurchaseController::class, 'showForm'])->name('purchase.showForm');
         // 購入処理
-        Route::post('/purchase/{item_id}', [PurchaseController::class, 'purchase'])->name('purchase.purchase');
-
+        Route::post('/purchase/{item_id}', [PurchaseController::class, 'purchase'])->name('purchase');
+       
         // 配送先変更画面（任意で使う場合）
         Route::get('/purchase/address/{item_id}', [PurchaseController::class, 'editAddressForm'])->name('purchase.editAddressForm');
         // 配送先変更処理
@@ -64,10 +64,12 @@ use App\Http\Controllers\CommentController;
         // コメント
         Route::post('/comment/{item}', [CommentController::class, 'store'])->name('comments.store');
 
-
     });
 
+ // 購入御礼ページ
+ Route::get('purchase/thanks', [PurchaseController::class, 'thanks'])->name('purchase.thanks');
 
+ 
    // 1. メール認証リンクの処理（ユーザーIDとハッシュが付いた署名付きURLを検証）
 //  Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
 //   $request->fulfill();  // 認証状態に更新

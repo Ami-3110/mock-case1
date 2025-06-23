@@ -33,9 +33,12 @@
     
             @if ($product) {{-- 念のためnullチェック --}}
             <div class="product-card">
-                <a href="{{ route('item.show', ['item_id' => $product->id]) }}">
-                    <img src="{{ asset('storage/' . $product->product_image) }}" alt="商品画像" class="product-image">
+                @if (!$product->is_sold)
+                    <a href="{{ route('item.show', ['item_id' => $product->id]) }}">
+                @endif
             
+                    <img src="{{ asset('storage/' . $product->product_image) }}" alt="商品画像" class="product-image">
+                    </a>         
                     <div class="product-info-row">
                         <p class="product-name">{{ $product->product_name }}</p>
             
@@ -43,7 +46,10 @@
                             <span class="sold-label">sold</span>
                         @endif
                     </div>
-                </a>
+            
+                @if (!$product->is_sold)
+
+                @endif
             </div>
             
             @endif

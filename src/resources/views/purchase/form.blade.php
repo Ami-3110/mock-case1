@@ -5,6 +5,8 @@
 @endsection
 
 @section('content')
+<form method="POST" action="{{ route('purchase', ['item_id' => $item->id]) }}">
+    @csrf
 <div class="purchase-form-container">
     {{-- 左2/3 --}}
     <div class="form-left">
@@ -20,7 +22,7 @@
         
 
         <hr>
-
+        
         {{-- 支払い方法 --}}
         <div class="form-group">
             <label for="payment_method">支払い方法</label>
@@ -42,10 +44,13 @@
                 <label for="ship_address">配送先</label>
                 <a href="{{ route('purchase.updateAddress', ['item_id' => $item->id]) }}">変更する</a>
             </div>
-
-            <p class="shipping-info">{{ $shipping['ship_postal_code'] }}</p>
-            <p class="shipping-info">{{ $shipping['ship_address'] }}</p>
-            <p class="shipping-info">{{ $shipping['ship_building'] }}</p>
+            @if(isset($shipping))
+                <p class="shipping-info">{{ $shipping['ship_postal_code'] }}</p>
+                <p class="shipping-info">{{ $shipping['ship_address'] }}</p>
+                <p class="shipping-info">{{ $shipping['ship_building'] }}</p>
+            @else
+                <p class="error-message">配送先が未設定です</p>
+            @endif
         </div>
 
         <hr>
@@ -65,10 +70,10 @@
                 </td>
             </tr>
         </table>
-
         <button type="submit" class="btn-submit">購入する</button>
-    </form>
+    </div>
 </div>
+</form>
 
 {{-- 選択中の支払い方法を即時表示 --}}
 <script>
