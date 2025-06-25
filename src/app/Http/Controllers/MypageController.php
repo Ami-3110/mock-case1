@@ -13,6 +13,7 @@ use App\Models\Like;
 use App\Models\User;
 use App\Http\Requests\AddressRequest;
 use App\Http\Requests\ProfileRequest;
+use Illuminate\Support\Facades\Storage;
 
 class MypageController extends Controller
 {
@@ -37,34 +38,34 @@ class MypageController extends Controller
     public function updateProfile(AddressRequest $request){
         $user = auth()->user();
 
-        $profileRequest = new ProfileRequest();
-        $validator = Validator::make($request->all(), $profileRequest->rules(), $profileRequest->messages());
-
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
-        }
-
-        // プRpフィール画像がなければ新規作成
+        // user_profiles がなければ新しく作成（user_idを指定）
         $profile = $user->userProfile ?? new \App\Models\UserProfile(['user_id' => $user->id]);
+
+        // プロフィール画像がアップロードされていれば古い画像を削除の上、新しい画像を保存
         if ($request->hasFile('user_image')) {
-            $path = $request->file('user_image')->store('profile_images', 'public');
+            if ($profile->profile_image && Storage::disk('public')->exists($profile->profile_image)) {
+                Storage::disk('public')->delete($profile->profile_image);
+            }
+
+            $originalName = $user->id . '_' . $request->file('user_image')->getClientOriginalName();
+            $path = $request->file('user_image')->storeAs('user_images', $originalName, 'public');
+
             $profile->profile_image = $path;
-            $user->userProfile->save();
         }
-    
+
+        // プロフィール情報を更新
         $profile->postal_code = $request->postal_code;
         $profile->address = $request->address;
         $profile->building = $request->building;
         $profile->save();
-    
-        // 必要に応じてユーザー名も更新
-        if ($request->filled('user_name')) {
-            $user->user_name = $request->user_name;
-            $user->save();
-        }
-        return redirect('/mypage')->with('success', 'プロフィールを更新しました。');
+
+        // ユーザー名も更新
+        $user->user_name = $request->user_name;
+        $user->save();
+
+        return redirect('/mypage');
     }
-    
+
+
+        
 }

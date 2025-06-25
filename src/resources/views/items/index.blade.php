@@ -8,7 +8,9 @@
     <div class="tabs">
         <a href="{{ route('items.index', ['tab' => 'recommend']) }}"
             class="{{ request()->tab === 'recommend' || request()->tab === null ? 'tab active' : 'tab' }}">おすすめ</a>         
-        <a href="{{ route('items.index', ['tab' => 'mylist']) }}" class="{{ request()->tab === 'mylist' ? 'tab active' : 'tab' }}">マイリスト</a>
+        <a href="{{ route('items.index', ['tab' => 'mylist', 'keyword' => request()->input('keyword')]) }}" class="{{ request()->tab === 'mylist' ? 'tab active' : 'tab' }}">マイリスト</a>
+             
+
     </div>
 
     <div class="tab-border"></div>

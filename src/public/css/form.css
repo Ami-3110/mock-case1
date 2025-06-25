@@ -116,12 +116,19 @@
 
 
 /* 購入ボタン */
+.btn-wrapper {
+    text-align: center;
+    margin-top: 20px;
+    width: 100%;
+}
 .btn-submit {
+    display: block;
     padding: 12px;
     width: 100%;
     background-color: #f44336;
     color: #fff;
     font-size: 16px;
+    text-decoration: none;
     border: none;
     border-radius: 6px;
     cursor: pointer;

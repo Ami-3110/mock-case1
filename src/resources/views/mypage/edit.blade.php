@@ -11,17 +11,13 @@
     <form method="POST" action="{{ route('mypage.updateProfile') }}" enctype="multipart/form-data">
         @csrf
 
-        
-
         {{-- プロフィール画像 --}}
         <div class="form-group profile-image-edit-area">
             <div class="profile-image-wrapper">
-                @if ($user->userProfile && $user->userProfile->profile_image)
-                    <img src="{{ asset('storage/' . $user->userProfile->profile_image) }}?v={{ time() }}" alt="プロフィール画像" class="profile-image">
-                @else
-                    <div class="default-image-circle">No Image</div>
-                @endif
+                <img id="profilePreview" class="profile-image" style="display: {{ $user->userProfile && $user->userProfile->profile_image ? 'block' : 'none' }};" src="{{ $user->userProfile && $user->userProfile->profile_image ? asset('storage/' . $user->userProfile->profile_image) : '' }}" alt="プロフィール画像">
+                <div id="defaultPreview" class="default-image-circle" style="display: {{ $user->userProfile &&$user->userProfile->profile_image ? 'none' : 'flex' }};">No Image</div>
             </div>
+               
         
             <label for="profile_image" class="custom-file-label">画像を選択する</label>
             <input type="file" name="user_image" id="profile_image" class="file-input" accept="image/*">
@@ -69,4 +65,28 @@
         <button type="submit" class="edit-button">更新する</button>
     </form>
 </div>
+@section('js')
+<script>
+    document.getElementById('profile_image').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        const previewImg = document.getElementById('profilePreview');
+        const defaultDiv = document.getElementById('defaultPreview');
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+            previewImg.src = e.target.result;
+            previewImg.style.display = 'block';
+            defaultDiv.style.display = 'none';
+            }
+            reader.readAsDataURL(file);
+        } else {
+            previewImg.style.display = 'none';
+            defaultDiv.style.display = 'flex';
+        }
+    });
+
+</script>
+@endsection
+
 @endsection

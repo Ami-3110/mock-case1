@@ -101,15 +101,15 @@
 
 /* 購入ボタン */
 .purchase-btn {
-    display: block;
+    display: inline-block;
     background-color: #f44336;
     color: white;
     font-weight: bold;
     text-align: center;
-    padding: 12px;
+    padding: 12px 24px;
     border-radius: 4px;
     text-decoration: none;
-    margin: 20px 0;
+    margin: 0 auto;
 }
 
 .purchase-btn:hover {

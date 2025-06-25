@@ -7,19 +7,26 @@ use Illuminate\Support\Facades\Session;
 use App\Models\Like;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class LikeController extends Controller
 {
     public function store(Request $request, $item_id){
         if (auth()->check()) {
-        // ログインユーザーの処理
             Like::firstOrCreate([
                 'user_id' => auth()->id(),
                 'product_id' => $item_id,
             ]);
-            return redirect()->route('item.show', ['item_id' => $item_id]);
+
+            // Ajax対応のJSONレスポンスを返す
+            $count = Like::where('product_id', $item_id)->count();
+            return response()->json([
+                'success' => true,
+                'likes_count' => $count,
+            ]);
         }
-        return redirect()->route('login');
+
+        return response()->json(['success' => false], 401);
     }
 
     public function destroy(Request $request, $item_id){
@@ -28,12 +35,14 @@ class LikeController extends Controller
                 ->where('product_id', $item_id)
                 ->delete();
 
-            return redirect()->route('item.show', ['item_id' => $item_id]);
+            $count = Like::where('product_id', $item_id)->count();
+            return response()->json([
+                'success' => true,
+                'likes_count' => $count,
+            ]);
         }
 
-        // 未ログインならログインページへリダイレクト
-        return redirect()->route('login');
+        return response()->json(['success' => false], 401);
     }
-
 
 }

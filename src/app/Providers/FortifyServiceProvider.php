@@ -15,10 +15,12 @@ use Illuminate\Support\Str;
 //use Illuminate\Contracts\Auth\MustVerifyEmail;
 //use Illuminate\Support\Facades\Event;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
 use Laravel\Fortify\Fortify;
-//use Laravel\Fortify\Contracts\VerifyEmailViewResponse;
+use Laravel\Fortify\Contracts\LoginResponse;
+use Laravel\Fortify\Contracts\VerifyEmailViewResponse;
 use Laravel\Fortify\Contracts\RegisterResponse;
-//use App\Http\Responses\VerifyEmailViewResponse as CustomVerifyEmailViewResponse;
+use App\Http\Responses\VerifyEmailViewResponse as CustomVerifyEmailViewResponse;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -57,6 +59,7 @@ class FortifyServiceProvider extends ServiceProvider
             return view('auth.register');
         });
 
+        
         // 会員登録後にプロフィール編集画面へ飛ばすカスタムリダイレクト
         $this->app->singleton(RegisterResponse::class, function () {
             return new class implements RegisterResponse {
@@ -68,14 +71,16 @@ class FortifyServiceProvider extends ServiceProvider
             };
         });
 
+        // Fortify が使うメール認証ページのカスタムView（今は使わない）
+        $this->app->singleton(VerifyEmailViewResponse::class, CustomVerifyEmailViewResponse::class);
+
 // イベントリスナ登録（メール認証に必要）
 //        Event::listen(Registered::class, function ($event) {
 //            if ($event->user instanceof MustVerifyEmail && ! $event->user->hasVerifiedEmail()) {
 //                session()->put('must_verify_email', true);
 //            }
 //        });
-// Fortify が使うメール認証ページのカスタムView（今は使わない）
-//        $this->app->singleton(VerifyEmailViewResponse::class, CustomVerifyEmailViewResponse::class);
+
 
 // ユーザー登録後に「認証してください」ページへ飛ばす処理（今は使わない）
 //        $this->app->singleton(RegisterResponse::class, function () {

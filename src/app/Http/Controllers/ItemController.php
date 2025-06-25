@@ -20,36 +20,51 @@ class ItemController extends Controller
     public function index(Request $request){
         $tab = $request->input('tab', 'recommend');
         $userId = auth()->id();
+        $keyword = $request->input('keyword');
     
         if ($tab === 'recommend') {
-            // 自分以外の商品すべて
             $products = Product::where('user_id', '!=', $userId)->get();
     
         } elseif ($tab === 'mylist') {
-            // Likeを先に取得し、そこからproductにアクセス
+            // 未ログインならログイン画面にリダイレクト
+            if (!auth()->check()) {
+                return redirect()->route('login');
+            }
+            
             $likes = auth()->user()
                 ->likes()
                 ->with('product')
                 ->get();
     
-            // Productが存在していて、かつ出品者が自分じゃないものだけ取り出す
-            $products = $likes->filter(function ($like) use ($userId) {
-                return $like->product && $like->product->user_id !== $userId;
+            $products = $likes->filter(function ($like) use ($userId, $keyword) {
+                $product = $like->product;
+    
+                return $product &&
+                       $product->user_id !== $userId &&
+                       (!$keyword || str_contains($product->product_name, $keyword));
             });
         }
     
         return view('items.index', [
             'products' => $products,
             'activeTab' => $tab,
+            'keyword' => $keyword,
         ]);
     }
+    
 
     // 商品検索
     public function search(Request $request){
         $keyword = $request->input('keyword');
-        $items = Product::where('name', 'like', '%' . $keyword . '%')->get();
-        return view('items.index', compact('items', 'keyword'));
+        $products = Product::where('product_name', 'like', '%' . $keyword . '%')->get();
+    
+        return view('items.index', [
+            'products' => $products,
+            'keyword' => $keyword,
+            'activeTab' => 'search',
+        ]);
     }
+    
 
     // 商品詳細
     public function show($item_id){
@@ -59,9 +74,8 @@ class ItemController extends Controller
     
         $user = auth()->user();
         $isLiked = $user ? $user->likes()->where('product_id', $item->id)->exists() : false;
-        $likeSymbol = $isLiked ? '★' : '☆';
     
-        return view('items.show', compact('item', 'isLiked', 'likeSymbol'));
+        return view('items.show', compact('item', 'isLiked'));
     }
     
 

@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use App\Http\Requests\RegisterRequest;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+
 
 class RegisteredUserController extends Controller
 {
@@ -22,15 +25,20 @@ class RegisteredUserController extends Controller
     // 会員登録処理
     public function store(RegisterRequest $request){
         $user = User::create([
-            'name' => $request->name,
+            'user_name' => $request->user_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
-        event(new Registered($user));
+        // event(new Registered($user));
+
+        if ($user instanceof MustVerifyEmail) {
+        $user->sendEmailVerificationNotification();
+        }
+
 
         Auth::login($user);
 
-        return redirect('/mypage/profile');
+        return redirect('/mypage/edit');
     }
 }

@@ -1,0 +1,66 @@
+/* 全体を中央に配置するための背景 */
+.massage-bg {
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 中央に浮かぶメッセージボックス */
+.message-field {
+    background: white;
+    padding: 30px 40px;
+    border-radius: 16px;
+    text-align: center;
+    max-width: 600px;
+    width: 90%;
+}
+
+/* 最初のメッセージ */
+.message-1 {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 50px;
+    line-height: 1.6;
+    font-weight: bold;
+}
+
+
+/* MailHogボタン風リンク */
+.verify-btn {
+    display: block;
+    width: 200px;
+    padding: 10px 20px;
+    margin: 0 auto 50px;
+    background-color: #D9D9D9;
+    border: 1px solid #000000;
+    color: #000000;
+    font-weight: bold;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.verify-btn:hover {
+    background-color: #BFBFBF;
+}
+
+/* 再送リンク風ボタン */
+.resend-form {
+    display: block;
+}
+
+.resend-link {
+    background: none;
+    border: none;
+    color: #3490dc;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0;
+}
+
+.resend-link:hover {
+    color: #1d72b8;
+}
+

@@ -36,7 +36,7 @@ class ProductSeeder extends Seeder
             'price' => 300,
             'product_image' => 'products/iLoveIMG+d.jpg',
             'condition' => 'やや傷や汚れあり',
-            'description'=> '新鮮な玉ネギ３玉のセット',
+            'description'=> '新鮮な玉ネギ３束のセット',
             'user_id' => $user->id,
             'is_sold'=>false,
         ]);

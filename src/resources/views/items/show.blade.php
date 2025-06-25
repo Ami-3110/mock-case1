@@ -20,16 +20,10 @@
                 <div class="icon-group">
                     {{-- いいね --}}
                     <div class="icon-block">
-                        <form action="{{ $isLiked ? route('like.destroy', ['product' => $item->id]) : route('like.store', ['product' => $item->id]) }}" method="POST">
-                            @csrf
-                            @if ($isLiked)
-                                @method('DELETE')
-                            @endif
-                            <button type="submit" class="icon-button" aria-label="{{ $isLiked ? 'いいねを解除' : 'いいねする' }}">
-                                <img src="{{ asset('images/like.png') }}" alt="いいねアイコン" class="icon-img">
-                            </button>
-                        </form>
-                        <span class="icon-count">{{ $item->likes_count ?? $item->likes->count() }}</span>
+                        <button id="like-button" data-product-id="{{ $item->id }}" class="icon-button" aria-pressed="{{ $isLiked ? 'true' : 'false' }}" aria-label="{{ $isLiked ? 'いいねを解除' : 'いいねする' }}">
+                            <img id="like-icon" src="{{ asset($isLiked ? 'images/like-active.png' : 'images/like.png') }}" alt="いいねアイコン" class="icon-img">
+                        </button>
+                        <span id="like-count" class="icon-count">{{ $item->likes_count ?? $item->likes->count() }}</span>
                     </div>
                 
                     {{-- コメント --}}
@@ -98,4 +92,42 @@
     </div>
 </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const likeButton = document.getElementById('like-button');
+        const likeIcon = document.getElementById('like-icon');
+        const likeCount = document.getElementById('like-count');
+    
+        likeButton.addEventListener('click', function() {
+            const productId = likeButton.dataset.productId;
+            const isLiked = likeButton.getAttribute('aria-pressed') === 'true';
+            const url = `/like/${productId}`;
+            const method = isLiked ? 'DELETE' : 'POST';
+    
+            fetch(url, {
+                method: method,
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: method === 'POST' ? JSON.stringify({}) : null,
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    likeButton.setAttribute('aria-pressed', (!isLiked).toString());
+                    likeIcon.src = !isLiked ? '{{ asset('images/like-active.png') }}' : '{{ asset('images/like.png') }}';
+                    likeCount.textContent = data.likes_count;
+                } else {
+                    alert('いいね操作に失敗しました');
+                }
+            })
+            .catch(() => {
+                alert('通信エラーが発生しました');
+            });
+        });
+    });
+</script> 
 @endsection
+    

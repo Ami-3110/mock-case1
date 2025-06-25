@@ -70,7 +70,9 @@
                 </td>
             </tr>
         </table>
-        <button type="submit" class="btn-submit">購入する</button>
+        <div class="btn-wrapper">
+            <a href="{{ route('purchase.stripe', ['item_id' => $item->id]) }}" class="btn-submit">購入する</a>
+        </div>
     </div>
 </div>
 </form>

@@ -9,17 +9,27 @@ use App\Models\Category;
 class ProductCategorySeeder extends Seeder
 {
     public function run(){
-        Product::find(14)->categories()->syncWithoutDetaching([1, 5]); // 腕時計
-        Product::find(15)->categories()->syncWithoutDetaching([2]);     // HDD
-        Product::find(16)->categories()->syncWithoutDetaching([10, 11]); // 玉ねぎ
-        Product::find(17)->categories()->syncWithoutDetaching([1, 5]);     // 革靴
-        Product::find(18)->categories()->syncWithoutDetaching([2]); // ノートPC
-        Product::find(19)->categories()->syncWithoutDetaching([2]);     // マイク
-        Product::find(20)->categories()->syncWithoutDetaching([1, 4]); // ショルダーバッグ
-        Product::find(21)->categories()->syncWithoutDetaching([10]);     // タンブラー
-        Product::find(22)->categories()->syncWithoutDetaching([3, 10]); // コーヒーミル
-        Product::find(23)->categories()->syncWithoutDetaching([1, 4]);     // メイクセット
-
+        $this->attachCategories('腕時計', [1, 5]);
+        $this->attachCategories('HDD', [2]);
+        $this->attachCategories('玉ねぎ３束', [10, 11]);
+        $this->attachCategories('革靴', [1, 5]);
+        $this->attachCategories('ノートPC', [2]);
+        $this->attachCategories('マイク', [2]);
+        $this->attachCategories('ショルダーバッグ', [1, 4]);
+        $this->attachCategories('タンブラー', [10]);
+        $this->attachCategories('コーヒーミル', [3, 10]);
+        $this->attachCategories('メイクセット', [1, 4]);
     }
+
+    private function attachCategories(string $productName, array $categoryIds){
+        $product = \App\Models\Product::where('product_name', $productName)->first();
+
+        if ($product) {
+            $product->categories()->syncWithoutDetaching($categoryIds);
+        } else {
+            echo "Product not found: {$productName}\n";
+        }
+    }
+
     
 }
