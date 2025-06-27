@@ -29,10 +29,10 @@
                     {{-- コメント --}}
                     <div class="icon-block">
                         <img src="{{ asset('images/comment.png') }}" alt="コメントアイコン" class="icon-img">
-                        <span class="icon-count">{{ $item->comments_count ?? 0 }}</span>
+                        <span id="comment-count" class="icon-count">{{ $item->comments_count ?? 0 }}</span>
                     </div>
                 </div>
-
+                <div></div>
                 {{-- 購入ボタン --}}
                 <a href="{{ route('purchase.showForm', ['item_id' => $item->id]) }}"
                 class="purchase-btn">

@@ -5,8 +5,10 @@
 @endsection
 
 @section('content')
+{{-- Stripe経由の購入にしてありますのでコメントアウトしています。
 <form method="POST" action="{{ route('purchase', ['item_id' => $item->id]) }}">
     @csrf
+     --}}
 <div class="purchase-form-container">
     {{-- 左2/3 --}}
     <div class="form-left">
@@ -75,7 +77,7 @@
         </div>
     </div>
 </div>
-</form>
+{{--</form>--}}
 
 {{-- 選択中の支払い方法を即時表示 --}}
 <script>

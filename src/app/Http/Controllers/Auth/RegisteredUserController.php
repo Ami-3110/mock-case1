@@ -30,15 +30,13 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        // event(new Registered($user));
-
         if ($user instanceof MustVerifyEmail) {
         $user->sendEmailVerificationNotification();
         }
 
-
         Auth::login($user);
 
-        return redirect('/mypage/edit');
+        return redirect()->route('verification.notice');
+
     }
 }

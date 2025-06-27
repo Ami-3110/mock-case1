@@ -12,8 +12,8 @@ use App\Models\Like;
 use App\Models\User;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
-
 use App\Http\Requests\PurchaseRequest;
+use Illuminate\Support\Facades\App;
 
 class PurchaseController extends Controller
 {
@@ -40,39 +40,39 @@ class PurchaseController extends Controller
     return view('purchase.form', compact('item', 'shipping'));
     }
 
-// 購入処理
-    public function purchase(PurchaseRequest $request, $item_id){
-        $validated = $request->validate([
-            'payment_method' => 'required|string|in:コンビニ払い,カード支払い',
-        ]);
-
-        $shipping = session('shipping_address_' . $item_id);
-
-        if (!$shipping) {
-            return redirect()->back()->withErrors(['配送先住所が見つかりません。もう一度入力してください。']);
-        }
-
-        Purchase::create([
-            'user_id'          => auth()->id(),
-            'product_id'       => $item_id,
-            'payment_method'   => $validated['payment_method'],
-            'ship_postal_code' => $shipping['ship_postal_code'],
-            'ship_address'     => $shipping['ship_address'],
-            'ship_building'    => $shipping['ship_building'],
-            'purchased_at'     => now(),
-        ]);
-
-        // 商品の is_sold を更新
-        $item = Product::findOrFail($item_id);
-        $item->is_sold = true;
-        $item->save();
-
-        // セッションから配送先を削除
-        session()->forget('shipping_address_' . $item_id);
-
-        // 購入完了 → サンクスページへリダイレクト
-        return redirect()->route('purchase.thanks');
-    }
+// 購入処理（Stripeに切り替えてあります）
+//  public function purchase(PurchaseRequest $request, $item_id){
+//        $validated = $request->validate([
+//        'payment_method' => 'required|string|in:コンビニ払い,カード支払い',
+//        ]);
+//
+//        $shipping = session('shipping_address_' . $item_id);
+//
+//        if (!$shipping) {
+//        return redirect()->back()->withErrors(['配送先住所が見つかりません。もう一度入力してください。']);
+//        }
+//
+//        Purchase::create([
+//        'user_id'          => auth()->id(),
+//        'product_id'       => $item_id,
+//        'payment_method'   => $validated['payment_method'],
+//        'ship_postal_code' => $shipping['ship_postal_code'],
+//        'ship_address'     => $shipping['ship_address'],
+//        'ship_building'    => $shipping['ship_building'],
+//        'purchased_at'     => now(),
+//        ]);
+//
+//        // 商品の is_sold を更新
+//        $item = Product::findOrFail($item_id);
+//        $item->is_sold = true;
+//        $item->save();
+//
+//        // セッションから配送先を削除
+//        session()->forget('shipping_address_' . $item_id);
+//
+//        // 購入完了 → サンクスページへリダイレクト
+//        return redirect()->route('purchase.thanks');
+//    }
 
 // 購入御礼ページ表示
     public function thanks(){
@@ -113,27 +113,57 @@ class PurchaseController extends Controller
     public function redirectToStripe(Request $request, $item_id){
         $item = Product::findOrFail($item_id);
 
-        Stripe::setApiKey(config('services.stripe.secret'));
+        $shipping = session('shipping_address_' . $item_id);
 
-        \Log::debug('Stripe success URL: ' . route('purchase.thanks'));
+        if (!$shipping) {
+            return redirect()->back()->withErrors(['配送先住所が見つかりません。もう一度入力してください。']);
+        }
 
-        $checkout = Session::create([
-            'payment_method_types' => ['card'],
-            'line_items' => [[
-                'price_data' => [
-                    'currency' => 'jpy',
-                    'unit_amount' => $item->price,
-                    'product_data' => [
-                        'name' => $item->product_name,
-                    ],
-                ],
-                'quantity' => 1,
-            ]],
-            'mode' => 'payment',
-            'success_url' => route('purchase.thanks'), 
-            'cancel_url' => route('purchase.showForm', ['item_id' => $item_id]),
+        // 保存処理
+        Purchase::create([
+            'user_id'          => auth()->id(),
+            'product_id'       => $item_id,
+            'payment_method'   => 'カード支払い', // Stripeはカード固定なので直書き
+            'ship_postal_code' => $shipping['ship_postal_code'],
+            'ship_address'     => $shipping['ship_address'],
+            'ship_building'    => $shipping['ship_building'],
+            'purchased_at'     => now(),
         ]);
 
-        return redirect($checkout->url);
+        // 商品の is_sold を更新
+        $item->is_sold = true;
+        $result = $item->save();
+        if (app()->environment('local', 'testing')) {
+        \Log::debug('is_sold更新成功？: ' . var_export($result, true));
+        }
+
+        // セッションから配送先を削除
+        session()->forget('shipping_address_' . $item_id);
+
+        if (!App::environment('testing')) {
+            Stripe::setApiKey(config('services.stripe.secret'));
+
+            \Log::debug('Stripe success URL: ' . route('purchase.thanks'));
+
+            $checkout = Session::create([
+                'payment_method_types' => ['card'],
+                'line_items' => [[
+                    'price_data' => [
+                        'currency' => 'jpy',
+                        'unit_amount' => $item->price,
+                        'product_data' => [
+                            'name' => $item->product_name,
+                        ],
+                    ],
+                    'quantity' => 1,
+                ]],
+                'mode' => 'payment',
+                'success_url' => route('purchase.thanks'), 
+                'cancel_url' => route('purchase.showForm', ['item_id' => $item_id]),
+            ]);
+
+            return redirect($checkout->url);
+        }
+        return redirect()->route('purchase.thanks');
     }
 }

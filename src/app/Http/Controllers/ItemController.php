@@ -26,25 +26,25 @@ class ItemController extends Controller
             $products = Product::where('user_id', '!=', $userId)->get();
     
         } elseif ($tab === 'mylist') {
-            // 未ログインならログイン画面にリダイレクト
+            // 未ログインなら空のコレクションを返す
             if (!auth()->check()) {
-                return redirect()->route('login');
+                $products = collect();
+            } else {
+                $likes = auth()->user()
+                    ->likes()
+                    ->with('product')
+                    ->get();
+    
+                $products = $likes->filter(function ($like) use ($userId, $keyword) {
+                    $product = $like->product;
+        
+                    return $product &&
+                        $product->user_id !== $userId &&
+                        (!$keyword || str_contains($product->product_name, $keyword));
+                });
             }
-            
-            $likes = auth()->user()
-                ->likes()
-                ->with('product')
-                ->get();
-    
-            $products = $likes->filter(function ($like) use ($userId, $keyword) {
-                $product = $like->product;
-    
-                return $product &&
-                       $product->user_id !== $userId &&
-                       (!$keyword || str_contains($product->product_name, $keyword));
-            });
         }
-    
+        
         return view('items.index', [
             'products' => $products,
             'activeTab' => $tab,
@@ -99,7 +99,7 @@ class ItemController extends Controller
             'is_sold' => false,
         ]);
 
-        $product->categories()->sync($request->category_ids);
+        $product->categories()->sync($request->category);
 
         return redirect('/mypage?tab=sell');
     }

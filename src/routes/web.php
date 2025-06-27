@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
@@ -30,11 +31,21 @@ use App\Http\Controllers\CommentController;
     Route::get('/thanks', [PurchaseController::class, 'thanks'])->name('purchase.thanks');
 
 //認証関連
+    // 会員登録画面
     Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
-    Route::post('/register', [RegisteredUserController::class, 'store']);
+    // 会員登録処理
+    Route::post('/register', [RegisteredUserController::class, 'store']);    
+    // ログイン画面
     Route::get('/login', [AuthenticatedSessionController::class, 'showLoginForm']);
+    // ログイン処理
     Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('login');
-    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');    
+    // ログアウト処理
+    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+    // メール認証を踏んだらログイン状態、かつプロフィール登録画面にかっ飛ばす
+    Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+        $request->fulfill();
+        return redirect()->route('mypage.edit');
+    })->middleware(['signed'])->name('verification.verify');
 
 //認証要
     Route::middleware(['auth', 'verified'])->group(function () {
@@ -53,7 +64,7 @@ use App\Http\Controllers\CommentController;
         // 購入フォーム表示（商品詳細→購入確認）
         Route::get('/purchase/{item_id}', [PurchaseController::class, 'showForm'])->name('purchase.showForm');
         // 購入処理
-        Route::post('/purchase/{item_id}', [PurchaseController::class, 'purchase'])->name('purchase');
+        // Route::post('/purchase/{item_id}', [PurchaseController::class, 'purchase'])->name('purchase.purchase');
         // stripe
         Route::get('/purchase/stripe/{item_id}', [PurchaseController::class, 'redirectToStripe'])->name('purchase.stripe');
         // 配送先変更画面
