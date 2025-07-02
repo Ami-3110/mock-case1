@@ -42,8 +42,13 @@
             @else
             @foreach ($sellItems as $product)
             <div class="product-card">
+                <a href="{{ route('item.show', ['item_id' => $product->id]) }}">
                     <img src="{{ asset('storage/' . $product->product_image) }}" alt="商品画像" class="product-image">
-                    <p class="product-name">{{ $product->product_name }}</p>
+                </a>
+                <p class="product-name">{{ $product->product_name }}</p>
+                @if ($product->is_sold)
+                    <span class="sold-label">sold</span>
+                @endif
             </div>
         @endforeach
         
@@ -55,8 +60,16 @@
                 @foreach ($buyItems as $purchase)
                     @if ($purchase->product)
                         <div class="product-card">
-                            <img src="{{ asset('storage/' . $purchase->product->product_image) }}" alt="商品画像" class="product-image">
-                            <p class="product-name">{{ $purchase->product->product_name }}</p>
+                            <a href="{{ route('item.show', ['item_id' => $purchase->product->id]) }}">
+                                <img src="{{ asset('storage/' . $purchase->product->product_image) }}" alt="商品画像" class="product-image">
+                            </a>
+                            <div class="product-info-row">
+                                <p class="product-name">{{ $purchase->product->product_name }}</p>
+                                @if ($purchase->product->is_sold)
+                                    <span class="sold-label">sold</span>
+                            </div>
+                            @endif
+                            
                         </div>
                     @endif
                 @endforeach

@@ -25,15 +25,15 @@
         @foreach ($products as $item)
             @if ($activeTab === 'mylist')
                 @php
-                    $product = $item->product; // Like → Product
+                    $product = $item->product;
                 @endphp
             @else
                 @php
-                    $product = $item; // すでに Product
+                    $product = $item;
                 @endphp
             @endif
     
-            @if ($product) {{-- 念のためnullチェック --}}
+            @if ($product)
             <div class="product-card">
                 @if (!$product->is_sold)
                     <a href="{{ route('item.show', ['item_id' => $product->id]) }}">

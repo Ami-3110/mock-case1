@@ -37,7 +37,7 @@
             <div class="category-tags">
                 @foreach ($categories as $category)
                     <label class="checkbox-tag">
-                        <input type="checkbox" class="hidden-checkbox" name="category_ids[]" value="{{ $category->id }}" {{ in_array($category->id, old('category_ids', [])) ? 'checked' : '' }}>
+                        <input type="checkbox" class="hidden-checkbox" name="category[]" value="{{ $category->id }}" {{ in_array($category->id, old('category', [])) ? 'checked' : '' }}>
                         <span class="tag">{{ $category->category_name }}</span>
                     </label>
                 @endforeach

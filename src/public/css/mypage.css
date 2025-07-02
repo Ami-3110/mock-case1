@@ -56,7 +56,6 @@
 .profile-right {
     position: absolute;
     right: -110px;
-    /* ← これでログアウトボタンの手前くらいに */
     top: 50%;
     transform: translateY(-50%);
 }
@@ -106,22 +105,106 @@
 .product-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 16px;
+    gap: 25px;
+    margin-top: 20px;
 }
 
 .product-card {
-    width: 150px;
+    width: 220px;
+    border-radius: 8px;
+    padding: 10px;
     text-align: center;
+    background-color: #fff;
 }
 
 .product-image {
     width: 100%;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 8px;
+    height: auto;
+    border-radius: 4px;
+}
+
+.product-info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
 }
 
 .product-name {
-    margin-top: 8px;
+    text-align: left;
+    margin: 0;
+    flex: 1;
     font-size: 14px;
+    text-decoration-line: none !important;
+    color: #000000;
+}
+
+.sold-label {
+    color: red;
+    font-weight: bold;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+/* ==== タブレット用（768px〜850px） ==== */
+@media screen and (min-width: 768px) and (max-width: 850px) {
+    .profile-header {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        height: auto;
+        margin: 0 auto 20px;
+    }
+
+    .profile-image-wrapper {
+        width: 120px;
+        height: 120px;
+    }
+
+    .profile-info {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        margin-left: 0;
+        margin-top: 10px;
+        position: static;
+    }
+
+    .profile-right {
+        position: static;
+        transform: none;
+        margin-top: 10px;
+    }
+
+    .edit-profile-btn {
+        padding: 6px 18px;
+        font-size: 13px;
+    }
+
+    .username {
+        font-size: 18px;
+    }
+
+    .tabs {
+        gap: 10px;
+        margin-top: 30px;
+    }
+
+    .tab {
+        font-size: 14px;
+        padding: 6px 14px;
+    }
+
+    .product-card {
+        width: 45%;
+        margin: 0 auto;
+    }
+
+    .product-name {
+        font-size: 13px;
+    }
+
+    .sold-label {
+        font-size: 11px;
+    }
 }

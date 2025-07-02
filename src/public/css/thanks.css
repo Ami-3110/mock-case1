@@ -1,0 +1,56 @@
+.thanks-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    min-height: 80vh;
+    /* 画面のほぼ中央に配置 */
+    padding: 20px;
+    text-align: center;
+
+    background-color: #ffffff;
+    color: #333;
+}
+
+.thanks-container h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #000000;
+}
+
+.thanks-container p {
+    font-size: 16px;
+    margin-bottom: 30px;
+}
+
+.thanks-container a {
+    display: inline-block;
+    padding: 10px 24px;
+    background-color: #f44336;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.thanks-container a:hover {
+    background-color: #d32f2f;
+}
+
+/* ==== タブレット用（768px〜850px） ==== */
+@media screen and (max-width: 768px) and (max-width: 850px) {
+    .thanks-container h1 {
+        font-size: 20px;
+    }
+
+    .thanks-container p {
+        font-size: 14px;
+    }
+
+    .thanks-container a {
+        font-size: 13px;
+        padding: 10px 20px;
+    }
+}

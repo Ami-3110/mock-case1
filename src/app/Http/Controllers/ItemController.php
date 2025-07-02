@@ -16,7 +16,7 @@ use App\Http\Requests\ExhibitionRequest;
 
 class ItemController extends Controller
 {
-    // 商品一覧（全体）
+    // 商品一覧
     public function index(Request $request){
         $tab = $request->input('tab', 'recommend');
         $userId = auth()->id();
@@ -26,7 +26,6 @@ class ItemController extends Controller
             $products = Product::where('user_id', '!=', $userId)->get();
     
         } elseif ($tab === 'mylist') {
-            // 未ログインなら空のコレクションを返す
             if (!auth()->check()) {
                 $products = collect();
             } else {
@@ -103,6 +102,4 @@ class ItemController extends Controller
 
         return redirect('/mypage?tab=sell');
     }
-
-
 }

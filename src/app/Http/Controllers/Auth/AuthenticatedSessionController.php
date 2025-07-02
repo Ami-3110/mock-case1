@@ -27,7 +27,6 @@ class AuthenticatedSessionController extends Controller
         ]);
     }
 
-
     // ログアウト処理
     public function destroy(Request $request)
     {

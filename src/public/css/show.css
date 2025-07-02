@@ -7,7 +7,6 @@
     writing-mode: horizontal-tb;
 }
 
-/* メインエリア */
 .item-information {
     display: flex;
     flex-direction: column;
@@ -18,14 +17,12 @@
     display: flex;
     gap: 40px;
     align-items: flex-start;
-    /* 上端揃え */
-}
-.left-column {
-    flex: 0 0 450px;
-    /* 幅固定 */
 }
 
-/* 商品画像 */
+.left-column {
+    flex: 0 0 450px;
+}
+
 .product-image {
     width: 100%;
     height: auto;
@@ -33,100 +30,99 @@
     object-fit: cover;
 }
 
-
 .right-column {
     flex: 1;
     width: 100%;
     max-width: 550px;
-    /* 残りの幅 */
     display: flex;
     flex-direction: column;
 }
-
 
 .product_name {
     font-size: 22px;
     font-weight: bold;
     margin-bottom: 2px;
-    color: #111;
+    color: #000;
 }
 
 .brand {
     font-size: 12px;
-    color: #666;
+    color: #000;
     margin-bottom: 10px;
 }
 
 .price {
     font-size: 20px;
     font-weight: lighter;
-    color: #111;
+    color: #000;
     margin-bottom: 10px 0;
 }
-/*（税込）*/
+
 .price-addition {
     font-size: 12px;
-    color: #555;
+    color: #000;
     display: inline;
     margin-left: 5px;
 }
 
-/* いいね・コメント数 */
 .icon-group {
     display: flex;
     gap: 30px;
     margin-top: 15px;
     margin-left: 10px;
 }
+
 .icon-block {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
+
 .icon-button {
     background: none;
     border: none;
     padding: 0;
     cursor: pointer;
 }
+
 .icon-img {
     width: 24px;
     height: 24px;
 }
+
 .icon-count {
     font-size: 13px;
-    color: #333;
+    color: #000;
     margin-top: 4px;
 }
 
-/* 購入ボタン */
 .purchase-btn {
     display: inline-block;
+    width: 100%;
     background-color: #f44336;
     color: white;
     font-weight: bold;
     text-align: center;
-    padding: 12px 24px;
+    padding: 12px;
     border-radius: 4px;
     text-decoration: none;
-    margin: 0 auto;
+    margin: 10px auto;
 }
 
 .purchase-btn:hover {
     background-color: #d32f2f;
 }
 
-/* 見出し */
 .item-heading {
+    color: #000;
     font-weight: bold;
     font-size: 18px;
     margin: 20px 0 10px;
 }
 
-/* 商品説明・属性 */
 .description {
     font-size: 14px;
-    color: #333;
+    color: #000;
     margin-bottom: 20px;
 }
 
@@ -142,7 +138,9 @@
     min-width: 80px;
     margin-right: 20px;
     font-size: 14px;
+    color: #000;
 }
+
 .item-categories {
     display: flex;
     flex-wrap: wrap;
@@ -162,11 +160,17 @@
 .condition {
     display: inline-block;
     margin-left: 10px;
-    color: #666;
+    color: #000;
     font-size: 12px;
 }
 
-/* コメント表示 */
+.item-heading_comment {
+    color: #5F5F5F;
+    font-weight: bold;
+    font-size: 18px;
+    margin: 20px 0 10px;
+}
+
 .comment-user {
     display: flex;
     align-items: center;
@@ -192,13 +196,15 @@
 .comment-name {
     font-weight: bold;
     font-size: 14px;
-    color: #333;
+    color: #000;
 }
 
 .comment-content {
-    margin-left: 50px;
     font-size: 14px;
-    color: #444;
+    color: #000;
+    background-color: #E5E5E5;
+    border-radius: 4px;
+    padding: 10px;
     margin-bottom: 20px;
 }
 
@@ -207,10 +213,10 @@
     color: #000;
     margin-bottom: 20px;
     background-color: #E5E5E5;
+    padding: 10px;
     padding: 15px 5px;
 }
 
-/* コメントフォーム */
 .comment-form {
     width: 100%;
     height: 200px;
@@ -244,4 +250,71 @@
 
 .comment-btn:hover {
     background-color: #d32f2f;
+}
+
+/* ==== タブレット用（768px〜850px） ==== */
+@media screen and (min-width: 768px) and (max-width: 850px) {
+    .item-wrapper {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .left-column {
+        flex: none;
+        width: 100%;
+    }
+
+    .right-column {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .product_name {
+        font-size: 20px;
+    }
+
+    .price {
+        font-size: 18px;
+    }
+
+    .icon-group {
+        justify-content: flex-start;
+        gap: 20px;
+        margin-left: 0;
+    }
+
+    .purchase-btn {
+        width: 100%;
+        padding: 14px;
+        font-size: 16px;
+    }
+
+    .item-heading {
+        font-size: 16px;
+    }
+
+    .description,
+    .comment-content,
+    .comment-form {
+        font-size: 13px;
+    }
+
+    .item-attribute {
+        font-size: 13px;
+    }
+
+    .category-tag {
+        font-size: 12px;
+        padding: 5px 10px;
+    }
+
+    .comment-user-image,
+    .default-comment-image {
+        width: 36px;
+        height: 36px;
+    }
+
+    .comment-name {
+        font-size: 13px;
+    }
 }

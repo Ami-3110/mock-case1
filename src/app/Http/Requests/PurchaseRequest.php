@@ -36,9 +36,7 @@ class PurchaseRequest extends FormRequest
             ];
         }
         return[];
-
     }
-
 
     public function messages(){
         return [

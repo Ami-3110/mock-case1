@@ -1,4 +1,3 @@
-/* 全体を中央に配置するための背景 */
 .massage-bg {
     height: 500px;
     display: flex;
@@ -6,7 +5,6 @@
     align-items: center;
 }
 
-/* 中央に浮かぶメッセージボックス */
 .message-field {
     background: white;
     padding: 30px 40px;
@@ -16,7 +14,6 @@
     width: 90%;
 }
 
-/* 最初のメッセージ */
 .message-1 {
     font-size: 16px;
     color: #333;
@@ -25,8 +22,6 @@
     font-weight: bold;
 }
 
-
-/* MailHogボタン風リンク */
 .verify-btn {
     display: block;
     width: 200px;
@@ -45,7 +40,6 @@
     background-color: #BFBFBF;
 }
 
-/* 再送リンク風ボタン */
 .resend-form {
     display: block;
 }
@@ -64,3 +58,20 @@
     color: #1d72b8;
 }
 
+/* ==== タブレット用（768px〜850px） ==== */
+@media screen and (max-width: 850px) {
+    .message-field {
+        padding: 20px;
+        width: 90%;
+    }
+
+    .message-1 {
+        font-size: 14px;
+    }
+
+    .verify-btn {
+        width: 100%;
+        padding: 12px 0;
+        font-size: 14px;
+    }
+}

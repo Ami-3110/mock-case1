@@ -18,7 +18,6 @@ class LikeController extends Controller
                 'product_id' => $item_id,
             ]);
 
-            // Ajax対応のJSONレスポンスを返す
             $count = Like::where('product_id', $item_id)->count();
             return response()->json([
                 'success' => true,

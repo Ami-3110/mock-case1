@@ -79,3 +79,53 @@
 
 ## ログイン情報
     
+# フリマアプリ「Mock Case 1」
+
+このアプリは、ユーザー登録から出品・購入・プロフィール管理までできる**簡易フリマアプリ**です。Laravelを使って、ログイン機能や画像アップロード、購入処理などを実装しています。
+
+## 🌟 機能一覧
+
+- ユーザー登録・ログイン（メール認証付き）
+- プロフィール編集（アイコン画像・名前）
+- 商品の出品（画像・カテゴリ・状態・価格など）
+- 商品一覧・詳細ページ
+- 商品の購入処理（Stripe決済対応予定）
+- マイページ機能（出品・購入履歴のタブ切り替え）
+- コメント・いいね機能（オプション）
+- 住所入力・変更（購入時）
+
+## 🛠 使用技術
+
+| 項目 | 内容 |
+|------|------|
+| フレームワーク | Laravel 10 |
+| データベース | MySQL |
+| 認証 | Laravel Breeze（Email Verification 使用） |
+| フロント | Blade / CSS / JavaScript（Choices.jsなど） |
+| 画像保存 | Storage（`public` ディスク） |
+| その他 | Stripe（予定）|
+
+## 📦 セットアップ手順（ローカル環境）
+
+```bash
+git clone https://github.com/yourusername/mock-case_1.git
+cd mock-case_1
+
+# 依存関係のインストール
+composer install
+npm install && npm run dev
+
+# 環境ファイルの作成
+cp .env.example .env
+
+# アプリキー生成
+php artisan key:generate
+
+# DBマイグレーション＆シーディング
+php artisan migrate --seed
+
+# ストレージリンク作成
+php artisan storage:link
+
+# サーバー起動
+php artisan serve

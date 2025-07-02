@@ -83,3 +83,30 @@
     font-size: 12px;
     white-space: nowrap;
 }
+
+/* ==== タブレット用（768px〜850px） ==== */
+@media screen and (min-width: 768px) and (max-width: 850px) {
+    .tab {
+        padding: 8px 12px;
+        font-size: 14px;
+        margin: 0 10px;
+    }
+
+    .product-list {
+        justify-content: center;
+        gap: 16px;
+    }
+
+    .product-card {
+        width: 160px;
+        padding: 8px;
+    }
+
+    .product-name {
+        font-size: 13px;
+    }
+
+    .sold-label {
+        font-size: 11px;
+    }
+}

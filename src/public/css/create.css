@@ -32,6 +32,7 @@
     justify-content: center;
     gap: 10px;
 }
+
 .custom-file-button {
     display: inline-block;
     padding: 8px 16px;
@@ -45,6 +46,7 @@
     text-align: center;
     font-size: 14px;
 }
+
 .custom-file-button:hover {
     background-color: red;
     color: white;
@@ -70,7 +72,6 @@
 .remove-image {
     position: absolute;
     top: 6px;
-    /* 少し調整 */
     right: 6px;
     background: rgba(0, 0, 0, 0.6);
     color: white;
@@ -80,9 +81,7 @@
     height: 24px;
     cursor: pointer;
     font-size: 18px;
-    /* 少し大きめに */
     line-height: 24px;
-    /* 縦中央に */
     text-align: center;
     padding: 0;
     user-select: none;
@@ -96,7 +95,6 @@
     border-bottom: #5F5F5F solid 1px;
     margin-bottom: 15px;
 }
-
 
 .category-tags {
     display: flex;
@@ -138,7 +136,6 @@
     font-size: 14px;
 }
 
-
 .product_name,
 .brand,
 .description,
@@ -166,7 +163,6 @@
     background-color: #c0392b;
 }
 
-/* Choices.js カスタム */
 .choices[data-type*='select-one'] .choices__inner {
     padding: 10px 10px;
     background-color: #ffffff;
@@ -177,7 +173,6 @@
     box-sizing: border-box;
 }
 
-/* ドロップダウン中の選択肢項目 */
 .choices__list .choices__item--choice.choices__item--selectable {
     position: relative;
     padding-left: 28px !important;
@@ -187,14 +182,12 @@
     z-index: 1;
 }
 
-/* ハイライト時（ホバー）に ✔︎ を表示 */
 .choices__list--dropdown .choices__item--selectable.is-highlighted {
     background-color: #5599EB !important;
     color: #ffffff;
     border-radius: 4px;
 }
 
-/* ✔︎アイコン */
 .choices__list .choices__item--choice.choices__item--selectable::before {
   content: "✔︎";
   position: absolute;
@@ -205,10 +198,55 @@
   color: transparent;
 }
 
-/* ハイライト中 or 選択中のときだけ✔︎を見せる */
 .choices__list .choices__item--choice.choices__item--selectable.is-highlighted::before {
   color: #ffffff;
 }
 
+/* ==== タブレット用（768px〜850px） ==== */
+@media screen and (min-width: 768px) and (max-width: 850px) {
+    .form-container {
+        padding: 20px;
+        width: 90%;
+    }
 
+    .title {
+        font-size: 18px;
+    }
 
+    .label {
+        font-size: 13px;
+    }
+
+    .product_name,
+    .brand,
+    .description,
+    .price,
+    .condition {
+        font-size: 13px;
+        padding: 8px;
+    }
+
+    .submit-button {
+        font-size: 15px;
+        padding: 10px 16px;
+    }
+
+    .custom-file-button {
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+
+    .product-detail {
+        font-size: 16px;
+    }
+
+    .tag {
+        font-size: 12px;
+        padding: 5px 14px;
+    }
+
+    .choices[data-type*='select-one'] .choices__inner {
+        font-size: 11px;
+        padding: 8px;
+    }
+}

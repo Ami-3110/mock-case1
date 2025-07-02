@@ -27,6 +27,7 @@ class AddressRequest extends FormRequest
             'address' => ['required'],
         ];
     }
+    
     public function messages(){
         return [
             'user_name.required' => 'お名前を入力してください',

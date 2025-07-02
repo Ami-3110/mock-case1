@@ -61,7 +61,7 @@
                     </div>
 
                 {{-- コメント一覧 --}}
-                <div class="item-heading">コメント（{{ $item->comments_count ?? 0 }}）</div>
+                <div class="item-heading_comment">コメント（{{ $item->comments_count ?? 0 }}）</div>
                 @forelse ($item->comments as $comment)
                     <div class="comment-user">
                         @if ($comment->user->userProfile && $comment->user->userProfile->profile_image)

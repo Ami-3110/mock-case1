@@ -71,7 +71,7 @@ class FortifyServiceProvider extends ServiceProvider
             };
         });
 
-        // Fortify が使うメール認証ページのカスタムView（今は使わない）
+        // Fortify が使うメール認証ページのカスタムView
         $this->app->singleton(VerifyEmailViewResponse::class, CustomVerifyEmailViewResponse::class);
 
 // イベントリスナ登録（メール認証に必要）

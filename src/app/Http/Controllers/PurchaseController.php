@@ -119,25 +119,22 @@ class PurchaseController extends Controller
             return redirect()->back()->withErrors(['配送先住所が見つかりません。もう一度入力してください。']);
         }
 
-        // 保存処理
         Purchase::create([
             'user_id'          => auth()->id(),
             'product_id'       => $item_id,
-            'payment_method'   => 'カード支払い', // Stripeはカード固定なので直書き
+            'payment_method'   => 'カード支払い',
             'ship_postal_code' => $shipping['ship_postal_code'],
             'ship_address'     => $shipping['ship_address'],
             'ship_building'    => $shipping['ship_building'],
             'purchased_at'     => now(),
         ]);
 
-        // 商品の is_sold を更新
         $item->is_sold = true;
         $result = $item->save();
         if (app()->environment('local', 'testing')) {
         \Log::debug('is_sold更新成功？: ' . var_export($result, true));
         }
 
-        // セッションから配送先を削除
         session()->forget('shipping_address_' . $item_id);
 
         if (!App::environment('testing')) {

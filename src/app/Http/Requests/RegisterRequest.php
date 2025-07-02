@@ -27,6 +27,7 @@ class RegisterRequest extends FormRequest
             'password' => ['required','min:8','confirmed'],
         ];
     }
+    
     public function messages(){
         return [
             'user_name.required' => 'お名前を入力してください',

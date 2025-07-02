@@ -26,11 +26,12 @@ class ExhibitionRequest extends FormRequest
             'description'=> ['required', 'max:255'],
             'product_image'=> ['required','mimes:jpg,jpeg,png'],
             'category' => ['required', 'array', 'min:1'],
-            'category.*' => ['exists:categories,id'], // 各要素が有効なIDか
+            'category.*' => ['exists:categories,id'],
             'condition' => ['required'],
             'price' => ['required','integer','min:0'],
         ];
     }
+    
     public function messages(){
         return [
             'product_name.required' => '商品名を入力してください',

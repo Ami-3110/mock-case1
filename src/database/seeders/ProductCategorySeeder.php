@@ -30,6 +30,4 @@ class ProductCategorySeeder extends Seeder
             echo "Product not found: {$productName}\n";
         }
     }
-
-    
 }

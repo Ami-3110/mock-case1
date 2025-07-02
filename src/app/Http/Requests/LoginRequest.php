@@ -26,6 +26,7 @@ class LoginRequest extends FormRequest
             'password' => ['required','min:8'],
         ];
     }
+    
     public function messages(){
         return [
             'email.required' => 'メールアドレスを入力してください',
@@ -35,6 +36,4 @@ class LoginRequest extends FormRequest
             '???' => 'ログイン情報が登録されていません。'
         ];
     }
-
-    
 }

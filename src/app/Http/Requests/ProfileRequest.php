@@ -25,5 +25,4 @@ class ProfileRequest extends FormRequest
             'profile_image'=> ['mimes:jpg,jpeg,png'],
         ];
     }
-
 }

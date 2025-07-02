@@ -37,13 +37,10 @@ class Product extends Model
     }
 
     public function likes(){
-    return $this->belongsToMany(User::class, 'likes');
+        return $this->belongsToMany(User::class, 'likes');
     }
-
 
     public function purchase(){
         return $this->hasOne(Purchase::class);
     }
-
-
 }
