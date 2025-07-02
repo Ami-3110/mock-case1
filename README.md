@@ -58,18 +58,31 @@ coachtechフリマ
 
 ### フロントエンドビルド（Vite）
 このプロジェクトは Laravel 10 + Vite を使用しています。初回セットアップ時には以下の手順を実行してください。
-    1. Node.js / npmのインストール
-        Node.js（v18以上推奨）が必要です。
-        -　macOSの場合：brew install node`
-        -　Windowsの場合：Node.js公式サイトからインストーラを利用
-    2. npmパッケージのインストール
-        npm install
-    3. Vite 開発サーバー起動（開発環境の場合）
-        npm run dev
-        - ポート5173が他で使われていないことを確認してください
-    4. 本番用ビルド
-        npm run build
 
+1. Node.js / npmのインストール  
+   Node.js（v18以上推奨）が必要です。  
+   - macOSの場合：  
+     ```bash
+     brew install node
+     ```
+   - Windowsの場合：  
+     Node.js公式サイトからインストーラを利用  
+
+2. npmパッケージのインストール  
+   ```bash
+   npm install
+   ```
+
+3. Vite 開発サーバー起動（開発環境の場合）  
+   ```bash
+   npm run dev
+   ```
+   ※ ポート5173が他で使われていないことを確認してください
+
+4. 本番用ビルド  
+   ```bash
+   npm run build
+   ```
 
 ## URL
     Laravelアプリが正しく起動していると、以下のURLからアクセスできます。
