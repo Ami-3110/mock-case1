@@ -5,11 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
-use App\Models\Purchase;
-use App\Models\UserProfile;
-use App\Models\Comment;
-use App\Models\Like;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ExhibitionRequest;
 
@@ -55,7 +50,11 @@ class ItemController extends Controller
     // 商品検索
     public function search(Request $request){
         $keyword = $request->input('keyword');
-        $products = Product::where('product_name', 'like', '%' . $keyword . '%')->get();
+        $products = Product::where('product_name', 'like', '%' . $keyword . '%');
+        if (auth()->check()) {
+            $products = $products->where('user_id', '!=', auth()->id());
+        }
+        $products = $products->get();
     
         return view('items.index', [
             'products' => $products,
@@ -63,6 +62,7 @@ class ItemController extends Controller
             'activeTab' => 'search',
         ]);
     }
+    
     
 
     // 商品詳細

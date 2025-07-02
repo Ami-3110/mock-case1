@@ -5,7 +5,7 @@
 
 
 @section('content')
-    <div class="massage-bg">
+    <div class="message-bg">
         <div class="message-field">
             <p class="message-1">
                 登録していただいたメールアドレスに認証メールを送付しました。<br>

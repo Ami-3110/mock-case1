@@ -22,12 +22,13 @@ class AddressRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'profile_image'=> ['mimes:jpg,jpeg,png'],
             'user_name' =>['required'],
             'postal_code'=> ['required', 'regex:/^\d{3}-\d{4}$/'],
             'address' => ['required'],
         ];
     }
-    
+
     public function messages(){
         return [
             'user_name.required' => 'お名前を入力してください',

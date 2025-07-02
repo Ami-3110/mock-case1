@@ -23,7 +23,7 @@
         </div>
         
 
-        <hr>
+        <hr class="hr-line">
         
         {{-- 支払い方法 --}}
         <div class="form-group">
@@ -38,7 +38,7 @@
             @enderror
         </div>
 
-        <hr>
+        <hr class="hr-line">
 
         {{-- 配送先 --}}
         <div class="form-group">
@@ -54,8 +54,7 @@
                 <p class="error-message">配送先が未設定です</p>
             @endif
         </div>
-
-        <hr>
+        <hr class="hr-line">
     </div>
 
     {{-- 右1/3 --}}

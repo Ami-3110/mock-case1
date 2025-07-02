@@ -4,12 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
-use App\Models\Category;
 use App\Models\Purchase;
-use App\Models\UserProfile;
-use App\Models\Comment;
-use App\Models\Like;
-use App\Models\User;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
 use App\Http\Requests\PurchaseRequest;

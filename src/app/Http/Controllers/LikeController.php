@@ -2,12 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 use App\Models\Like;
-use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 
 class LikeController extends Controller
 {

@@ -82,12 +82,6 @@
 }
 
 /* ==== タブレット用（768px〜850px） ==== */
-@media screen and (min-width: 1400px) and (max-width: 1540px) {
-    .main-container {
-        padding: 0 48px;
-    }
-}
-
 @media screen and (min-width: 768px) and (max-width: 850px) {
     .function-bar {
         flex-direction: column;

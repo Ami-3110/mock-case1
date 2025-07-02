@@ -47,7 +47,7 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     ports:
-      - "3306:3306"  # 本番環境では必要に応じて外部公開制限する
+      - "3306:3306"
     command:
       --default-authentication-plugin=caching_sha2_password
     networks:

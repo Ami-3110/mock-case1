@@ -3,16 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use App\Models\Product;
-use App\Models\Category;
 use App\Models\Purchase;
-use App\Models\UserProfile;
-use App\Models\Comment;
-use App\Models\Like;
-use App\Models\User;
 use App\Http\Requests\AddressRequest;
-use App\Http\Requests\ProfileRequest;
 use Illuminate\Support\Facades\Storage;
 
 class MypageController extends Controller

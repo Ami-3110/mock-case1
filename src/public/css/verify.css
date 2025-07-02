@@ -1,4 +1,4 @@
-.massage-bg {
+.message-bg {
     height: 500px;
     display: flex;
     justify-content: center;
@@ -59,7 +59,7 @@
 }
 
 /* ==== タブレット用（768px〜850px） ==== */
-@media screen and (max-width: 850px) {
+@media screen and (min-width: 768px) and (max-width: 850px) {
     .message-field {
         padding: 20px;
         width: 90%;

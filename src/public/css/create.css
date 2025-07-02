@@ -59,12 +59,6 @@
     display: none;
 }
 
-.custom-file-button {
-    display: inline-block;
-    padding: 8px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-}
 .custom-file-button.hidden {
     display: none !important;
 }
