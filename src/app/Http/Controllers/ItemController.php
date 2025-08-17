@@ -7,63 +7,80 @@ use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ExhibitionRequest;
+use Illuminate\Support\Str;
 
 
 class ItemController extends Controller
 {
+    // 共通：キーワードに大小無視で部分一致
+    private function matchesKeyword(?string $text, ?string $keyword): bool
+    {
+        if (!$keyword) return true;
+        if ($text === null) return false;
+
+        return Str::of($text)->lower()->contains(Str::lower($keyword));
+    }
+
     // 商品一覧
-    public function index(Request $request){
-        $tab = $request->input('tab', 'recommend');
-        $userId = auth()->id();
+    public function index(Request $request)
+    {
+        $tab     = $request->input('tab', 'recommend');
+        $userId  = auth()->id();
         $keyword = $request->input('keyword');
-    
+
         if ($tab === 'recommend') {
-            $products = Product::where('user_id', '!=', $userId)->get();
-    
+            $products = $userId
+                ? Product::where('user_id', '!=', $userId)->get()
+                : Product::all();
+
         } elseif ($tab === 'mylist') {
             if (!auth()->check()) {
                 $products = collect();
             } else {
-                $likes = auth()->user()
-                    ->likes()
-                    ->with('product')
-                    ->get();
-    
+                $likes = auth()->user()->likes()->with('product')->get();
+
                 $products = $likes->filter(function ($like) use ($userId, $keyword) {
                     $product = $like->product;
-        
-                    return $product &&
-                        $product->user_id !== $userId &&
-                        (!$keyword || str_contains($product->product_name, $keyword));
-                });
+                    return $product
+                        && $product->user_id !== $userId
+                        && $this->matchesKeyword($product->product_name, $keyword);
+                })->values();
             }
+        } else {
+            $products = collect();
         }
-        
+
         return view('items.index', [
-            'products' => $products,
+            'products'  => $products,
             'activeTab' => $tab,
-            'keyword' => $keyword,
+            'keyword'   => $keyword,
         ]);
     }
-    
 
     // 商品検索
-    public function search(Request $request){
+    public function search(Request $request)
+    {
         $keyword = $request->input('keyword');
-        $products = Product::where('product_name', 'like', '%' . $keyword . '%');
-        if (auth()->check()) {
-            $products = $products->where('user_id', '!=', auth()->id());
-        }
-        $products = $products->get();
-    
+
+        // ★ DB側もケース無視へ（各ドライバで挙動差が出にくい書き方）
+        $kw = $keyword ? mb_strtolower($keyword, 'UTF-8') : null;
+
+        $products = Product::query()
+            ->when($kw, function ($q) use ($kw) {
+                // LOWER(product_name) LIKE %lower(keyword)%
+                $q->whereRaw('LOWER(product_name) LIKE ?', ['%'.$kw.'%']);
+            })
+            ->when(auth()->check(), function ($q) {
+                $q->where('user_id', '!=', auth()->id());
+            })
+            ->get();
+
         return view('items.index', [
-            'products' => $products,
-            'keyword' => $keyword,
+            'products'  => $products,
+            'keyword'   => $keyword,
             'activeTab' => 'search',
         ]);
     }
-    
-    
 
     // 商品詳細
     public function show($item_id){
@@ -77,7 +94,6 @@ class ItemController extends Controller
         return view('items.show', compact('item', 'isLiked'));
     }
     
-
     // 出品フォーム表示
     public function create(){
         $categories = Category::all();

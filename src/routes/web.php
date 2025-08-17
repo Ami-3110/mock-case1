@@ -23,10 +23,9 @@ use App\Http\Controllers\CommentController;
     //商品検索
     Route::get('/search', [ItemController::class, 'search'])->name('items.search');
     // いいね追加
-    Route::post('/like/{product}', [LikeController::class, 'store'])->name('like.store');
+    Route::post('/like/{item_id}', [LikeController::class, 'store'])->name('like.store');
     // いいね解除
-    Route::delete('/like/{product}', [LikeController::class, 'destroy'])->name('like.destroy');
-
+    Route::delete('/like/{item_id}', [LikeController::class, 'destroy'])->name('like.destroy');
     // 購入御礼ページ
     Route::get('/thanks', [PurchaseController::class, 'thanks'])->name('purchase.thanks');
 
@@ -66,7 +65,7 @@ use App\Http\Controllers\CommentController;
         // 購入処理
         // Route::post('/purchase/{item_id}', [PurchaseController::class, 'purchase'])->name('purchase.purchase');
         // stripe
-        Route::get('/purchase/stripe/{item_id}', [PurchaseController::class, 'redirectToStripe'])->name('purchase.stripe');
+        Route::post('/purchase/confirm/{item_id}', [PurchaseController::class, 'confirm'])->name('purchase.confirm');
         // 配送先変更画面
         Route::get('/purchase/address/{item_id}', [PurchaseController::class, 'editAddressForm'])->name('purchase.editAddressForm');
         // 配送先変更処理

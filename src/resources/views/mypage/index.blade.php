@@ -10,13 +10,10 @@
     <div class="profile-header">
         <div class="profile-image-wrapper">
             @if ($user->userProfile && $user->userProfile->profile_image)
-                <img src="{{ asset('storage/' . $user->userProfile->profile_image) }}" alt="プロフィール画像" class="profile-image">
-            @else
-                <div class="profile-placeholder"></div>
+                <img src="{{ asset('storage/' . $user->userProfile->profile_image) }}" alt="" class="profile-image">
             @endif
         </div>
-        
-        
+    
         <div class="profile-info">
             <div class="profile-left">
                 <h2 class="username">{{ $user->user_name }}</h2>
@@ -40,18 +37,17 @@
             @if ($sellItems->isEmpty())
                 <p class="empty-message">まだ出品した商品はありません。</p>
             @else
-            @foreach ($sellItems as $product)
-            <div class="product-card">
-                <a href="{{ route('item.show', ['item_id' => $product->id]) }}">
-                    <img src="{{ asset('storage/' . $product->product_image) }}" alt="商品画像" class="product-image">
-                </a>
-                <p class="product-name">{{ $product->product_name }}</p>
-                @if ($product->is_sold)
-                    <span class="sold-label">sold</span>
-                @endif
-            </div>
-        @endforeach
-        
+                @foreach ($sellItems as $product)
+                <div class="product-card">
+                    <a href="{{ route('item.show', ['item_id' => $product->id]) }}">
+                        <img src="{{ asset('storage/' . $product->product_image) }}" alt="商品画像" class="product-image">
+                    </a>
+                    <p class="product-name">{{ $product->product_name }}</p>
+                    @if ($product->is_sold)
+                        <span class="sold-label">sold</span>
+                    @endif
+                </div>
+                @endforeach
             @endif
         @elseif ($tab === 'buy')
             @if ($buyItems->isEmpty())
@@ -67,9 +63,8 @@
                                 <p class="product-name">{{ $purchase->product->product_name }}</p>
                                 @if ($purchase->product->is_sold)
                                     <span class="sold-label">sold</span>
-                            </div>
-                            @endif
-                            
+                                @endif
+                            </div>                            
                         </div>
                     @endif
                 @endforeach

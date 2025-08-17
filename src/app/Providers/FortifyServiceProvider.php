@@ -22,6 +22,7 @@ use Laravel\Fortify\Contracts\VerifyEmailViewResponse;
 use Laravel\Fortify\Contracts\RegisterResponse;
 use App\Http\Responses\VerifyEmailViewResponse as CustomVerifyEmailViewResponse;
 
+
 class FortifyServiceProvider extends ServiceProvider
 {
     /**
@@ -29,8 +30,9 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+
     }
+    
 
     /**
      * Bootstrap any application services.
@@ -92,4 +94,7 @@ class FortifyServiceProvider extends ServiceProvider
 //            };
 //        });
     }
+
+
+
 }

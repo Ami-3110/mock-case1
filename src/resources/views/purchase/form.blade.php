@@ -21,11 +21,8 @@
                 </div>
             </div>
         </div>
-        
-
         <hr class="hr-line">
-        
-        {{-- 支払い方法 --}}
+    {{-- 支払い方法 --}}
         <div class="form-group">
             <label for="payment_method">支払い方法</label>
             <select  class="selectbox" name="payment_method" id="payment_method">
@@ -37,14 +34,12 @@
                 <p class="error-message">{{ $message }}</p>
             @enderror
         </div>
-
         <hr class="hr-line">
-
-        {{-- 配送先 --}}
+    {{-- 配送先 --}}
         <div class="form-group">
             <div class="form-label-with-link">
                 <label for="ship_address">配送先</label>
-                <a href="{{ route('purchase.updateAddress', ['item_id' => $item->id]) }}">変更する</a>
+                <a href="{{ route('purchase.editAddressForm', ['item_id' => $item->id]) }}">変更する</a>
             </div>
             @if(isset($shipping))
                 <p class="shipping-info">{{ $shipping['ship_postal_code'] }}</p>
@@ -56,45 +51,44 @@
         </div>
         <hr class="hr-line">
     </div>
-
-    {{-- 右1/3 --}}
+{{-- 右1/3 --}}
     <div class="form-right">
         <table class="summary-table">
             <tr>
-                <th>商品代金</th>
-                <td>¥{{ number_format($item->price) }}</td>
+            <th>商品代金</th>
+            <td>¥{{ number_format($item->price) }}</td>
             </tr>
             <tr>
-                <th>支払い方法</th>
-                <td>
-                    <span id="selected-payment_method"></span>
-                </td>
+            <th>支払い方法</th>
+            <td>
+                <span id="selected-payment_method">{{ old('payment_method') }}</span>
+            </td>
             </tr>
         </table>
+    {{-- ★ base URL を data 属性で持たせる --}}
         <div class="btn-wrapper">
-            <a href="{{ route('purchase.stripe', ['item_id' => $item->id]) }}" class="btn-submit">購入する</a>
+            <form method="POST" action="{{ route('purchase.confirm', ['item_id' => $item->id]) }}">
+                @csrf
+                <input type="hidden" name="payment_method" id="payment_method_hidden" value="{{ old('payment_method') }}">
+                <button type="submit" class="btn-submit">購入する</button>
+            </form>
         </div>
     </div>
-</div>
 {{--</form>--}}
 
 {{-- 選択中の支払い方法を即時表示 --}}
 <script>
-    const select = document.getElementById('payment_method');
-    const display = document.getElementById('selected-payment_method');
+  const select  = document.getElementById('payment_method'); // 左のselect(既存)
+  const display = document.getElementById('selected-payment_method');
+  const hidden  = document.getElementById('payment_method_hidden');
 
-    select.addEventListener('change', () => {
-        if (select.value === "") {
-            display.textContent = ""; // 
-        } else {
-            display.textContent = select.value;
-        }
-    });
-
-    if (select.value !== "") {
-        display.textContent = select.value;
-    }
-
+  function syncUI() {
+    const val = select.value || '';
+    display.textContent = val; // 画面表示
+    hidden.value = val;        // ★ POST用hiddenに同期（バリデ対象）
+  }
+  select.addEventListener('change', syncUI);
+  syncUI();
 </script>
 @endsection
 

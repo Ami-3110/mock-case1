@@ -28,7 +28,6 @@
             @enderror
         </div>
 
-
         <div class="product-detail">商品の詳細</div>
 
         {{-- カテゴリ --}}
@@ -131,7 +130,6 @@
             removeBtn.style.display = 'none';
             customFileButton.classList.remove('hidden');
         });
-
 
         //状態のプルダウン
         const conditionElement = document.getElementById('condition');

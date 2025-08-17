@@ -14,15 +14,15 @@
         {{-- プロフィール画像 --}}
         <div class="form-group profile-image-edit-area">
             <div class="profile-image-wrapper">
-                <img id="profilePreview" class="profile-image" style="display: {{ $user->userProfile && $user->userProfile->profile_image ? 'block' : 'none' }};" src="{{ $user->userProfile && $user->userProfile->profile_image ? asset('storage/' . $user->userProfile->profile_image) : '' }}" alt="プロフィール画像">
-                <div id="defaultPreview" class="default-image-circle" style="display: {{ $user->userProfile &&$user->userProfile->profile_image ? 'none' : 'flex' }};">No Image</div>
+                <img id="profilePreview" class="profile-image" style="display: {{ $user->userProfile && $user->userProfile->profile_image ? 'block' : 'none' }};" src="{{ $user->userProfile && $user->userProfile->profile_image ? asset('storage/' . $user->userProfile->profile_image) : '' }}" alt="">
+                <div id="defaultPreview" class="default-image-circle" style="display: {{ $user->userProfile &&$user->userProfile->profile_image ? 'none' : 'flex' }};"></div>
             </div>
                
         
             <label for="profile_image" class="custom-file-label">画像を選択する</label>
             <input type="file" name="user_image" id="profile_image" class="file-input" accept="image/*">
             
-            @error('profile_image')
+            @error('user_image')
                 <div class="error">{{ $message }}</div>
             @enderror
         </div>        
@@ -88,5 +88,4 @@
 
 </script>
 @endsection
-
 @endsection

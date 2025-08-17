@@ -16,15 +16,12 @@ class AuthenticatedSessionController extends Controller
      }
 
     // ログイン処理
-    public function store(LoginRequest $request){
-        $credentials = $request->only(Fortify::username(), 'password');
-        if (Auth::attempt($credentials, $request->filled('remember'))) {
-            $request->session()->regenerate();
-            return redirect()->intended('/');
-        }
-        return redirect('/login')->withErrors([
-            'login_error' => 'ログイン情報が登録されていません。',
-        ]);
+    public function store(LoginRequest $request)
+    {
+        $request->authenticate();              // ← ここで成功/失敗が決まる
+        $request->session()->regenerate();
+
+        return redirect()->intended('/');
     }
 
     // ログアウト処理

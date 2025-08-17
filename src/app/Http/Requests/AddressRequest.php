@@ -22,15 +22,17 @@ class AddressRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'profile_image'=> ['mimes:jpg,jpeg,png'],
+            'user_image'=> ['nullable','mimes:jpg,jpeg,png'],
             'user_name' =>['required'],
             'postal_code'=> ['required', 'regex:/^\d{3}-\d{4}$/'],
             'address' => ['required'],
+            'building'   => ['nullable'], 
         ];
     }
 
     public function messages(){
         return [
+            'user_image.mimes'   => 'プロフィール画像は.jpg, .jpeg, .pngのいずれかでアップロードしてください',
             'user_name.required' => 'お名前を入力してください',
             'postal_code.required' => '郵便番号を入力してください',
             'postal_code.regex' => '郵便番号は-を含む8文字で入力してください',
