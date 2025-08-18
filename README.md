@@ -32,7 +32,7 @@ docker compose -f docker-compose.yml -f docker-compose.mac.yml up -d
         docker-compose exec php bash
     2. Composerでパッケージインストール
         composer install
-        npm install && npm run dev
+        npm install
     3. .env.example をコピーして .env にリネーム
         cp .env.example .env
     4. .env のデータベース接続設定を修正
@@ -68,20 +68,15 @@ docker compose -f docker-compose.yml -f docker-compose.mac.yml up -d
      brew install node
      ```
    - Windowsの場合：  
-     Node.js公式サイトからインストーラを利用  
+     Node.js公式サイトからインストーラを利用
 
-2. npmパッケージのインストール  
-   ```bash
-   npm install
-   ```
-
-3. Vite 開発サーバー起動（開発環境の場合）
+2. Vite 開発サーバー起動（開発環境の場合）
    ```bash
    npm run dev
    ```
    ※ ポート5173が他で使われていないことを確認してください
 
-4. 本番用ビルド  
+3. 本番用ビルド  
    ```bash
    npm run build
    ```
