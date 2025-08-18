@@ -92,7 +92,7 @@ docker compose -f docker-compose.yml -f docker-compose.mac.yml up -d
 
 ## 使用技術
 - Laravel 12.18.0  
-- Vite 6.3.5
+- Vite 5.4.0
 - Node.js 20.15.1
 - npm 10.9.1
 - PHP 8.2.20
