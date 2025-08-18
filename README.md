@@ -32,7 +32,7 @@ docker compose -f docker-compose.yml -f docker-compose.mac.yml up -d
         docker-compose exec php bash
     2. Composerでパッケージインストール
         composer install
-        npm install vite
+        npm install
     3. .env.example をコピーして .env にリネーム
         cp .env.example .env
     4. .env のデータベース接続設定を修正
@@ -92,7 +92,7 @@ docker compose -f docker-compose.yml -f docker-compose.mac.yml up -d
 
 
 ## 使用技術
-- Laravel 12.18.0  
+- Laravel 10.18.0  
 - Vite 5.4.19
 - Node.js 20.15.1
 - npm 10.9.1
