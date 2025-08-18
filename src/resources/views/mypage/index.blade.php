@@ -10,7 +10,7 @@
     <div class="profile-header">
         <div class="profile-image-wrapper">
             @if ($user->userProfile && $user->userProfile->profile_image)
-                <img src="{{ asset('storage/' . $user->userProfile->profile_image) }}" alt="" class="profile-image">
+                <img src="{{ Storage::disk('public')->url($user->userProfile->profile_image ?? 'user_images/default.png') }}" alt="{{ $user->user_name }}" class="profile-image"/>
             @endif
         </div>
     

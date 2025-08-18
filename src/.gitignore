@@ -26,3 +26,8 @@ Thumbs.db
 .DS_Store
 # MySQL docker data
 docker/mysql/data/
+
+# allow committing demo images under public disk
+!/storage/app/public
+!/storage/app/public/products
+!/storage/app/public/user_images

@@ -14,14 +14,17 @@
 
         {{-- 商品画像 --}}
         <div class="form-group">
-            <label class="label" for="image">商品画像</label>
+            <label class="label" for="product_image">商品画像</label>
             <div class="image-space" style="position: relative;">
                 <input class="image" type="file" id="product_image" name="product_image" accept="image/*" style="display:none;">
                 <label for="product_image" class="custom-file-button">画像を選択する</label>
-                <img class="image-preview" id="image-preview" src="{{ old('product_image') ? asset('storage/' . old('product_image')) : '#' }}" 
-                alt="プレビュー" style="{{ old('product_image') ? '' : 'display:none;' }} max-height:100%; max-width:100%; object-fit: contain;">
-                <button class="remove-image" type="button" id="remove-image" 
-                style="{{ old('product_image') ? '' : 'display:none;' }} position:absolute; top:4px; right:4px;">×</button>
+
+                {{-- サーバーURLに依存しないプレビュー（初期は非表示、選択時にJSで表示） --}}
+                <img class="image-preview" id="image-preview" src="#" alt="プレビュー"
+                     style="display:none; max-height:100%; max-width:100%; object-fit: contain;">
+
+                <button class="remove-image" type="button" id="remove-image"
+                        style="display:none; position:absolute; top:4px; right:4px;">×</button>
             </div>
             @error('product_image')
             <div class="error">{{ $message }}</div>
@@ -87,7 +90,7 @@
         {{-- 価格 --}}
         <div class="form-group">
             <label class="label" for="price">販売価格</label>
-            <input type="number" class="price" name="price" value="{{ old('price') }}">
+            <input type="number" class="price" id="price" name="price" value="{{ old('price') }}">
             @error('price')
             <div class="error">{{ $message }}</div>
             @enderror
@@ -97,52 +100,55 @@
     </form>
 </div>
 @endsection
+
 @section('js')
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const input = document.getElementById('product_image');
-        const preview = document.getElementById('image-preview');
-        const removeBtn = document.getElementById('remove-image');
-        const customFileButton = document.querySelector('label[for="product_image"]');
+document.addEventListener('DOMContentLoaded', function () {
+    const input = document.getElementById('product_image');
+    const preview = document.getElementById('image-preview');
+    const removeBtn = document.getElementById('remove-image');
+    const customFileButton = document.querySelector('label[for="product_image"]');
 
-        // 画像プレビュー
-        input.addEventListener('change', function (e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    preview.src = e.target.result;
-                    preview.style.display = 'block';
-                    removeBtn.style.display = 'block';
-                    customFileButton.classList.add('hidden');
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        removeBtn.addEventListener('click', function () {
-            input.value = '';
-            preview.src = '#';
-            preview.style.display = 'none';
-            this.style.display = 'none';
-            removeBtn.style.display = 'none';
-            customFileButton.classList.remove('hidden');
-        });
-
-        //状態のプルダウン
-        const conditionElement = document.getElementById('condition');
-        if (conditionElement) {
-            new Choices(conditionElement, {
-                placeholder: true,
-                placeholderValue: '選択してください',
-                searchEnabled: false,
-                itemSelectText: '',
-                shouldSort: false,
-            });
+    // 画像プレビュー（FileReader / ObjectURL）
+    input.addEventListener('change', function (e) {
+        const file = e.target.files && e.target.files[0];
+        if (file) {
+            preview.src = URL.createObjectURL(file);
+            preview.style.display = 'block';
+            removeBtn.style.display = 'block';
+            customFileButton.classList.add('hidden');
+        } else {
+            resetPreview();
         }
     });
 
+    // 画像削除ボタン
+    removeBtn.addEventListener('click', function () {
+        input.value = '';
+        resetPreview();
+    });
+
+    function resetPreview() {
+        preview.src = '#';
+        preview.style.display = 'none';
+        removeBtn.style.display = 'none';
+        customFileButton.classList.remove('hidden');
+    }
+
+    // 状態のプルダウン（Choices.js）
+    const conditionElement = document.getElementById('condition');
+    if (conditionElement) {
+        new Choices(conditionElement, {
+            placeholder: true,
+            placeholderValue: '選択してください',
+            searchEnabled: false,
+            itemSelectText: '',
+            shouldSort: false,
+        });
+    }
+});
 </script>
 @endsection
+

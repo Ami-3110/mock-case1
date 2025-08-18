@@ -32,7 +32,7 @@
                 @if (!$product->is_sold)
                     <a href="{{ route('item.show', ['item_id' => $product->id]) }}">
                 @endif            
-                    <img src="{{ asset('storage/' . $product->product_image) }}" alt="商品画像" class="product-image">
+                    <img src="{{ Storage::disk('public')->url($product->product_image) }}" alt="商品画像" class="product-image">
                     </a>         
                     <div class="product-info-row">
                         <p class="product-name">{{ $product->product_name }}</p>            

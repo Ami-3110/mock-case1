@@ -14,11 +14,13 @@
         {{-- プロフィール画像 --}}
         <div class="form-group profile-image-edit-area">
             <div class="profile-image-wrapper">
-                <img id="profilePreview" class="profile-image" style="display: {{ $user->userProfile && $user->userProfile->profile_image ? 'block' : 'none' }};" src="{{ $user->userProfile && $user->userProfile->profile_image ? asset('storage/' . $user->userProfile->profile_image) : '' }}" alt="">
+                @php $p = optional($user->userProfile)->profile_image; @endphp
+                <img id="profilePreview" class="profile-image"
+                    style="display: {{ $p ? 'block' : 'none' }};"
+                    src="{{ $p ? Storage::disk('public')->url($p) : '' }}" alt="{{ $user->user_name }}">
                 <div id="defaultPreview" class="default-image-circle" style="display: {{ $user->userProfile &&$user->userProfile->profile_image ? 'none' : 'flex' }};"></div>
             </div>
-               
-        
+
             <label for="profile_image" class="custom-file-label">画像を選択する</label>
             <input type="file" name="user_image" id="profile_image" class="file-input" accept="image/*">
             

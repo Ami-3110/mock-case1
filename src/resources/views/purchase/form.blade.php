@@ -14,7 +14,7 @@
     <div class="form-left">
         <div class="product-summary">
             <div class="product-top">
-                <img src="{{ asset('storage/' . $item->product_image) }}" alt="{{ $item->product_name }}" class="product-image">
+                <img src="{{ Storage::disk('public')->url($item->product_image) }}" alt="{{ $item->product_name }}" class="product-image">
                 <div class="product-details">
                     <h3 class="product-name">{{ $item->product_name }}</h3>
                     <p class="price">¥{{ number_format($item->price) }}</p>

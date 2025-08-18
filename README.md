@@ -34,7 +34,6 @@ docker compose -f docker-compose.yml -f docker-compose.mac.yml up -d
         composer install
         npm install vite
     3. .env.example をコピーして .env にリネーム
-        cd src
         cp .env.example .env
     4. .env のデータベース接続設定を修正
         DB_CONNECTION=mysql
@@ -47,8 +46,10 @@ docker compose -f docker-compose.yml -f docker-compose.mac.yml up -d
         php artisan key:generate
     6. ストレージリンクの作成
         php artisan storage:link
+        ※ 本リポジトリには商品画像・プロフィール画像を `storage/app/public` に同梱済みです。
     7. マイグレーション・シーディングの実行
         php artisan migrate --seed
+        ※ 既に php artisan migrate --seed 済みの環境で再実行して重複エラーが出る場合はphp artisan migrate:fresh --seed（コンテナ内）を実行してください。すべてのテーブルが再作成されます。
 
 #### メール送信（開発環境用）
 本プロジェクトでは開発用に MailHog を使用しています。  
@@ -92,7 +93,7 @@ docker compose -f docker-compose.yml -f docker-compose.mac.yml up -d
 
 ## 使用技術
 - Laravel 12.18.0  
-- Vite 5.4.0
+- Vite 5.4.19
 - Node.js 20.15.1
 - npm 10.9.1
 - PHP 8.2.20

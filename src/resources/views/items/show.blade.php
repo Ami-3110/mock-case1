@@ -8,7 +8,7 @@
     <div class="item-information">
         <div class="item-wrapper">
             <div class="left-column">
-                <img src="{{ asset('storage/' . $item->product_image) }}" alt="商品画像" class="product-image">
+                <img src="{{ Storage::disk('public')->url($item->product_image) }}" alt="商品画像" class="product-image">
             </div>
 
             <div class="right-column">
