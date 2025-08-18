@@ -11,19 +11,21 @@ coachtechフリマ
 1. リポジトリをクローン  
    ```bash
    git clone git@github.com:Ami-3110/mock_case1.git
+   ```
 
 2. DockerDesktopアプリを立ち上げる。
-3. Dockerコンテナをビルド＆起動
-    docker-compose up -d --build
 
-        注意（Mac M3チップなどARM系CPUの場合）
-        no matching manifest for linux/arm64/v8 in the manifest list entries のエラーが出てビルドできない場合は、docker-compose.ymlのmysqlサービスに以下を追記してください。
+### 起動方法
+#### Linux / Windows（共通）
+```bash
+docker compose up -d
+```
 
-    mysql:
-        image: mysql:8.0.26
-        platform: linux/x86_64  # ← この行を追加
-        environment:
-
+#### macOS（Docker Desktop）
+```bash
+docker compose -f docker-compose.yml -f docker-compose.mac.yml up -d
+```
+※ macOS はファイル共有の仕様により、`sendfile off;` を有効化した `nginx.mac.conf` を使用します。
 
 ### Laravel環境構築
     1. PHPコンテナに入る
@@ -73,7 +75,7 @@ coachtechフリマ
    npm install
    ```
 
-3. Vite 開発サーバー起動（開発環境の場合）  
+3. Vite 開発サーバー起動（開発環境の場合）
    ```bash
    npm run dev
    ```

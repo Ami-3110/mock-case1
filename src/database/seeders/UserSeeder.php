@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
 
         UserProfile::create([
             'user_id' => $user1->id,
-            'profile_image' => 'banana.png',
+            'profile_image' => 'user_images/banana.png',
             'postal_code' => '111-1111',
             'address' => '東京都架空市架空町1-1-1',
             'building' => 'ドールハウス 101',
@@ -37,7 +37,7 @@ class UserSeeder extends Seeder
 
         UserProfile::create([
             'user_id' => $user2->id,
-            'profile_image' => 'grapes.png',
+            'profile_image' => 'user_images/grapes.png',
             'postal_code' => '111-1111',
             'address' => '東京都架空市架空町1-1-1',
             'building' => 'ドールハウス 102',
@@ -52,7 +52,7 @@ class UserSeeder extends Seeder
 
         UserProfile::create([
             'user_id' => $user3->id,
-            'profile_image' => 'kiwi.png',
+            'profile_image' => 'user_images/kiwi.png',
             'postal_code' => '111-1111',
             'address' => '東京都架空市架空町1-1-1',
             'building' => 'ドールハウス 103',
@@ -66,7 +66,7 @@ class UserSeeder extends Seeder
 
         UserProfile::create([
             'user_id' => $user4->id,
-            'profile_image' => 'melon.png',
+            'profile_image' => 'user_images/melon.png',
             'postal_code' => '111-1111',
             'address' => '東京都架空市架空町1-1-1',
             'building' => 'ドールハウス 104',
@@ -80,7 +80,7 @@ class UserSeeder extends Seeder
 
         UserProfile::create([
             'user_id' => $user5->id,
-            'profile_image' => 'muscat.png',
+            'profile_image' => 'user_images/muscat.png',
             'postal_code' => '111-1111',
             'address' => '東京都架空市架空町1-1-1',
             'building' => 'ドールハウス 105',
@@ -94,7 +94,7 @@ class UserSeeder extends Seeder
 
         UserProfile::create([
             'user_id' => $user6->id,
-            'profile_image' => 'peach.png',
+            'profile_image' => 'user_images/peach.png',
             'postal_code' => '111-1111',
             'address' => '東京都架空市架空町1-1-1',
             'building' => 'ドールハウス 201',
@@ -108,7 +108,7 @@ class UserSeeder extends Seeder
 
         UserProfile::create([
             'user_id' => $user7->id,
-            'profile_image' => 'pineapple.png',
+            'profile_image' => 'user_images/pineapple.png',
             'postal_code' => '111-1111',
             'address' => '東京都架空市架空町1-1-1',
             'building' => 'ドールハウス 202',
@@ -122,7 +122,7 @@ class UserSeeder extends Seeder
 
         UserProfile::create([
             'user_id' => $user8->id,
-            'profile_image' => 'strawberry.png',
+            'profile_image' => 'user_images/strawberry.png',
             'postal_code' => '111-1111',
             'address' => '東京都架空市架空町1-1-1',
             'building' => 'ドールハウス 別館',
