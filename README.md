@@ -32,8 +32,9 @@ docker compose -f docker-compose.yml -f docker-compose.mac.yml up -d
         docker-compose exec php bash
     2. Composerでパッケージインストール
         composer install
-        npm install
+        npm install vite
     3. .env.example をコピーして .env にリネーム
+        cd src
         cp .env.example .env
     4. .env のデータベース接続設定を修正
         DB_CONNECTION=mysql
@@ -73,6 +74,7 @@ docker compose -f docker-compose.yml -f docker-compose.mac.yml up -d
 2. Vite 開発サーバー起動（開発環境の場合）
    ```bash
    npm run dev
+
    ```
    ※ ポート5173が他で使われていないことを確認してください
 
