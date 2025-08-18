@@ -22,10 +22,21 @@ class ID15_ProductCreateTest extends TestCase
         ]);
     }
 
+    /** 1x1 PNG のバイナリを一時ファイルに書き出してパスを返す（GD不要） */
+    private function createTempPngPath(): string
+    {
+        $png1x1 = base64_decode(
+            'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGMAAQAABQABqotWAAAAAElFTkSuQmCC'
+        );
+        $path = sys_get_temp_dir() . '/t_' . uniqid() . '.png';
+        file_put_contents($path, $png1x1);
+        return $path;
+    }
+
     #[Test]
     public function submitting_create_form_saves_required_fields_and_categories_with_image()
     {
-        Storage::fake('public'); // ストレージをモック
+        Storage::fake('public'); // publicディスクをモック
 
         $user = $this->makeVerifiedUser();
         $this->actingAs($user);
@@ -34,28 +45,31 @@ class ID15_ProductCreateTest extends TestCase
         $cat1 = Category::factory()->create(['category_name' => 'カテゴリA']);
         $cat2 = Category::factory()->create(['category_name' => 'カテゴリB']);
 
-        // ダミー画像を用意
-        $fakeImage = UploadedFile::fake()->image('product.jpg');
+        // ←←← ここがポイント：GD不要の実ファイルを使う（image()は禁止）
+        $tmpPath   = $this->createTempPngPath();
+        $fakeImage = new UploadedFile(
+            $tmpPath,            // 実ファイルパス
+            'product.png',       // クライアントファイル名
+            'image/png',         // MIME
+            null,
+            true                 // テスト用 = アップロード済み扱い
+        );
 
-        // 入力データ
         $payload = [
-            'category'     => [$cat1->id, $cat2->id], // checkbox: category[]
+            'category'     => [$cat1->id, $cat2->id],
             'condition'    => '良好',
             'product_name' => 'テスト出品タイトル',
             'brand'        => 'ブランド名（任意）',
             'description'  => '説明テキストです。',
             'price'        => 19800,
-            'product_image'=> $fakeImage, // 必須の画像
+            'product_image'=> $fakeImage,
         ];
 
-        // 送信
         $res = $this->post(route('items.store'), $payload);
 
-        // 成功（基本リダイレクト）
         $res->assertStatus(302);
         $res->assertSessionHasNoErrors();
 
-        // DBに商品が保存されていること
         $this->assertDatabaseHas('products', [
             'product_name' => 'テスト出品タイトル',
             'description'  => '説明テキストです。',
@@ -64,13 +78,10 @@ class ID15_ProductCreateTest extends TestCase
             'user_id'      => $user->id,
         ]);
 
-        // 保存された商品を取得
         $product = Product::where('product_name', 'テスト出品タイトル')->firstOrFail();
 
-        // ストレージに画像が保存されていること
         Storage::disk('public')->assertExists($product->product_image);
 
-        // ピボットテーブルにカテゴリが紐づいていること
         $this->assertDatabaseHas('product_category', [
             'product_id'  => $product->id,
             'category_id' => $cat1->id,
@@ -81,3 +92,4 @@ class ID15_ProductCreateTest extends TestCase
         ]);
     }
 }
+
