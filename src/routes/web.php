@@ -11,6 +11,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\TradeController;
 
 /*Route::get('/', function () {
     return view('welcome');*/
@@ -70,4 +71,20 @@ use App\Http\Controllers\CommentController;
         Route::get('/purchase/address/{item_id}', [PurchaseController::class, 'editAddressForm'])->name('purchase.editAddressForm');
         // 配送先変更処理
         Route::post('/purchase/address/{item_id}', [PurchaseController::class, 'updateAddress'])->name('purchase.updateAddress');
+
+        // 個別チャット表示
+        Route::get('/trades/{trade}', [TradeController::class, 'show'])->name('trades.show');
+
+        Route::middleware('auth')->group(function () {
+            Route::get('/trades/{trade}', [\App\Http\Controllers\TradeController::class, 'show'])->name('trades.show');
+
+            // チャット投稿・編集・削除
+            Route::post('/trades/{trade}/messages', [\App\Http\Controllers\TradeMessageController::class, 'store'])->name('chat.store');
+            Route::patch('/messages/{message}', [\App\Http\Controllers\TradeMessageController::class, 'update'])->name('chat.update');
+            Route::delete('/messages/{message}', [\App\Http\Controllers\TradeMessageController::class, 'destroy'])->name('chat.destroy');
+
+            // 取引完了（ダミーでもOK・既存あれば不要）
+            Route::post('/trades/{trade}/complete', [\App\Http\Controllers\TradeCompleteController::class, 'store'])->name('trade.complete');
+        });
+
     });

@@ -1,0 +1,373 @@
+:root {
+    --header-h: 60px;
+    /* ヘッダー高さ。app2の.headerがpadding 16pxなので大体80px前後 */
+}
+
+html,
+body {
+    height: 100%;
+}
+
+/* フルブリード化（中央寄せ解除して画面幅いっぱいに） */
+.trade-fullbleed {
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    width: 100vw;
+}
+
+/* 2カラムをヘッダー直下から敷き詰める */
+.trade-layout {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    /* 左1/5, 右4/5 */
+    height: calc(100vh - var(--header-h));
+}
+
+/* ===== 左：サイドバー ===== */
+.trade-sidebar {
+    background: #868686;
+    color: #fff;
+    padding: 16px 12px;
+    /* 中身の余白だけ残す */
+    margin: 0;
+    height: 100%;
+    /* 親（trade-layout）の高さにフィット */
+}
+
+.sidebar-head {
+    font-weight: 700;
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 40px;
+}
+
+.side-trade-list {
+    list-style: none;
+    margin: 20px;
+    padding: 0;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.side-trade-link {
+    display: block;
+    padding: 10px 12px;
+    background: #EEEFEB;
+    color: #000;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.side-trade-item.active .side-trade-link {
+    outline: 2px solid #5F5F5F;
+}
+
+.side-empty {
+    opacity: .8;
+}
+
+/* ===== 右：メイン ===== */
+.trade-main {
+    background: #fff;
+    color: #000;
+    padding: 16px 20px 24px;
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - var(--header-h));
+}
+
+/* ヘッダー */
+.main-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.head-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 999px;
+    background: #D9D9D9;
+    overflow: hidden;
+    flex: 0 0 auto;
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar.small {
+    width: 40px;
+    height: 40px;
+}
+
+.head-title {
+    font-size: 22px;
+    font-weight: 800;
+    margin: 0;
+}
+
+.btn-complete {
+    background: #FFB3B3;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 999px;
+    padding: 8px 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* 区切り線 */
+.divider {
+    border-bottom: 2px solid #5F5F5F;
+    margin: 12px 0;
+}
+
+/* 商品情報 */
+.product-block {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 6px 0;
+}
+
+.product-thumb {
+    width: 180px;
+    height: 180px;
+    background: #D9D9D9;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.product-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.product-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.product-name {
+    font-size: 28px;
+    font-weight: 800;
+}
+
+.product-price {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+/* チャット */
+.chat-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 4px 8px;
+}
+
+/* --- チャット行のベース --- */
+.chat-row {
+    display: flex;
+    align-items: flex-start;
+    /* 上端を揃える（ズレ防止） */
+    gap: 10px;
+    margin: 14px 0;
+}
+
+.chat-row.right {
+    justify-content: flex-end;
+}
+
+/* --- 名前の行＋バブルを縦積み --- */
+.bubble-wrap {
+    display: flex;
+    /* ← 追加 */
+    flex-direction: column;
+    /* 名前 → バブル → 操作 で縦積み */
+    align-items: flex-start;
+    /* 左メッセージは左寄せ */
+    max-width: 72%;
+}
+
+.chat-row.right .bubble-wrap {
+    align-items: flex-end;
+    /* 右メッセージは右寄せ */
+    text-align: right;
+}
+
+/* --- ユーザー名はアイコンの横の1行、その下に確実に改行してバブル --- */
+.bubble-wrap .name {
+    display: block;
+    /* ブロック化＝強制改行 */
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0 0 6px;
+    /* 名前の下に余白 */
+}
+
+.chat-row.right .name {
+    text-align: right;
+}
+
+/* --- バブル --- */
+.bubble {
+    background: #D9D9D9;
+    border-radius: 5px;
+    padding: 10px 12px;
+    display: inline-block;
+    /* テキスト長に応じて伸縮 */
+    text-align: left;
+    /* 右寄せ時も中身は左揃え */
+    max-width: 100%;
+}
+
+/* --- 画像付きメッセージの余白調整 --- */
+.msg-image img {
+    max-width: 320px;
+    border-radius: 5px;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.msg-body {
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+/* --- 操作リンク（編集/削除）は常に1行で右端寄せ --- */
+.ops {
+    margin-top: 6px;
+    display: flex;
+    /* 横並び */
+    gap: 12px;
+    justify-content: flex-end;
+    align-self: flex-end;
+    /* バブル幅に追従して右端に寄る */
+    white-space: nowrap;
+    /* 2行折返しを防止 */
+}
+
+.ops .inline {
+    display: inline;
+}
+
+/* ← Bladeのformに付いてる .inline を実体化 */
+.op-link {
+    background: none;
+    border: none;
+    color: #5F5F5F;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+.op-link.danger {
+    color: #5F5F5F;
+}
+
+/* 送信エリア */
+.composer {
+    margin-top: 8px;
+    flex-shrink: 0;
+}
+
+.form-errors {
+    color: #e11d48;
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+
+.composer-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.composer-input {
+    flex: 1;
+    border: 1px solid #5F5F5F;
+    border-radius: 6px;
+    padding: 10px 12px;
+    color: #5F5F5F;
+}
+
+.btn-image {
+    border: 1px solid #FF5555;
+    color: #FF5555;
+    padding: 5px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    user-select: none;
+    background: #fff;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.btn-send {
+    width: 48px;
+    height: 48px;
+    border: none;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-send img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* レスポンシブ（任意） */
+@media (max-width: 980px) {
+    .trade-layout {
+        grid-template-columns: 220px 1fr;
+    }
+
+    .product-name {
+        font-size: 22px;
+    }
+
+    .product-price {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 640px) {
+    .trade-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .trade-sidebar {
+        order: 2;
+    }
+
+    .trade-main {
+        order: 1;
+    }
+
+    .bubble-wrap {
+        max-width: 86%;
+    }
+}
+

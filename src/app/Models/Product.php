@@ -45,4 +45,20 @@ class Product extends Model
         return $this->hasOne(Purchase::class);
     }
 
+    public function trades() {
+        return $this->hasMany(\App\Models\Trade::class);
+    }
+/** 完売しているか（completedな取引が1つでもあればtrue） */
+public function getIsSoldAttribute(): bool
+{
+    return $this->trades()
+        ->where('status', 'completed')
+        ->exists();
+}
+
+/** 販売中のみのスコープ（必要に応じて） */
+public function scopeAvailable($q)
+{
+    return $q->whereDoesntHave('trades', fn ($qq) => $qq->where('status', 'completed'));
+}
 }
