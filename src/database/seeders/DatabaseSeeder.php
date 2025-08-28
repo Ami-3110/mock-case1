@@ -38,15 +38,15 @@ class DatabaseSeeder extends Seeder
             }
         }
 
-        // 3) いつものシード呼び出し
         $this->call([
             UserSeeder::class,
             CategorySeeder::class,
             ProductSeeder::class,
             ProductCategorySeeder::class,
             LikeSeeder::class,
-            // TradeSeeder::class,
+            TradeSeeder::class,
             // TradeMessageSeeder::class,
+            TradeRatingSeeder::class,
         ]);
     }
 }

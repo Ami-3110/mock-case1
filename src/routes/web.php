@@ -12,6 +12,8 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\TradeController;
+use App\Http\Controllers\TradeCompleteController;
+use App\Http\Controllers\TradeRatingController;
 
 /*Route::get('/', function () {
     return view('welcome');*/
@@ -85,6 +87,9 @@ use App\Http\Controllers\TradeController;
 
             // 取引完了（ダミーでもOK・既存あれば不要）
             Route::post('/trades/{trade}/complete', [\App\Http\Controllers\TradeCompleteController::class, 'store'])->name('trade.complete');
+            // 評価投稿（購入者→出品者、出品者→購入者 共通）
+            Route::post('/trades/{trade}/ratings', [\App\Http\Controllers\TradeRatingController::class, 'store'])->name('trade.ratings.store');
+
         });
 
     });

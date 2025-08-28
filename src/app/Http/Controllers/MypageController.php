@@ -96,9 +96,13 @@ class MypageController extends Controller
             }
         }
 
+        $ratingAvg = \App\Models\TradeRating::where('ratee_id', $user->id)->avg('score'); // float|null
+        $ratingAvgRounded = is_null($ratingAvg) ? null : round($ratingAvg);
+
         // ビュー返却（どのタブでも未読総数が埋まっている）
         return view('mypage.index', compact(
             'user',
+            'ratingAvgRounded',
             'tab',
             'sellItems',
             'buyItems',

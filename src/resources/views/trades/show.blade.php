@@ -46,11 +46,12 @@
             <h1 class="head-title">「{{ $counterName }}」さんとの取引画面</h1>
         </div>
 
-        @if($canComplete)
-            <form method="POST" action="{{-- route('trade.complete', $trade) --}}">
+        {{-- 完了ボタン（購入者のみ） --}}
+        @if($role === 'buyer' && $trade->status === 'trading')
+        <form method="POST" action="{{ route('trade.complete', $trade) }}">
             @csrf
             <button class="btn-complete">取引を完了する</button>
-            </form>
+        </form>
         @endif
         </header>
 
@@ -160,4 +161,44 @@
   })();
 </script>
 @endsection
+
+{{-- 評価モーダル（自分が未評価のときだけ表示） --}}
+@php
+  $me = auth()->id();
+  $iAmBuyer  = $trade->buyer_id === $me;
+  $iAmSeller = $trade->seller_id === $me;
+  $iRated    = \App\Models\TradeRating::where('trade_id',$trade->id)->where('rater_id',$me)->exists();
+
+  $shouldOpen = false;
+  // 購入者：完了直後 or buyer_completedで未評価
+  if ($iAmBuyer && !$iRated && (session('completed') || $trade->status === 'buyer_completed')) {
+      $shouldOpen = true;
+  }
+  // 出品者：buyer_completedで未評価
+  if ($iAmSeller && !$iRated && $trade->status === 'buyer_completed') {
+      $shouldOpen = true;
+  }
+@endphp
+
+@if($shouldOpen)
+<div class="modal-backdrop">
+  <div class="modal">
+    <h3>取引相手を評価</h3>
+    <form method="POST" action="{{ route('trade.ratings.store', $trade) }}">
+      @csrf
+      <div class="stars">
+        <label><input type="radio" name="score" value="5" required>5</label>
+        <label><input type="radio" name="score" value="4">4</label>
+        <label><input type="radio" name="score" value="3">3</label>
+        <label><input type="radio" name="score" value="2">2</label>
+        <label><input type="radio" name="score" value="1">1</label>
+      </div>
+      <div class="actions">
+        <button type="submit" class="btn primary">評価を送信</button>
+      </div>
+    </form>
+  </div>
+</div>
+@endif
+
 @endsection
