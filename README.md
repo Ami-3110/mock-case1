@@ -2,54 +2,57 @@
 coachtechフリマ
 
 ## 概要  
-本プロジェクトは模擬案件1回目として作成されたフリマアプリケーションです。
+本プロジェクトはプロテスト１回目として、模擬案件1回目に作成されたフリマアプリケーションに機能追加を行なったものです。
 
 ---
 
 ## インストール方法
-### Dockerビルド
-1. リポジトリをクローン  
+### Dockerビルド・Laravel環境構築
+
+1. DockerDesktopアプリを立ち上げる。
+2. リポジトリをクローン  
    ```bash
-   git clone git@github.com:Ami-3110/mock_case1.git
+   git clone git@github.com:Ami-3110/mock-case1.git
+   cd mock-case1
    ```
-
-2. DockerDesktopアプリを立ち上げる。
-
-### 起動方法
-#### Linux / Windows（共通）
-```bash
-docker compose up -d
-```
-
-#### macOS（Docker Desktop）
-```bash
-docker compose -f docker-compose.yml -f docker-compose.mac.yml up -d
-```
-※ macOS はファイル共有の仕様により、`sendfile off;` を有効化した `nginx.mac.conf` を使用します。
-
-### Laravel環境構築
-    1. PHPコンテナに入る
-        docker-compose exec php bash
-    2. Composerでパッケージインストール
-        composer install
-        npm install
-    3. .env.example をコピーして .env にリネーム
-        cp .env.example .env
-    4. .env のデータベース接続設定を修正
-        DB_CONNECTION=mysql
-        DB_HOST=mysql
-        DB_PORT=3306
-        DB_DATABASE=laravel_db
-        DB_USERNAME=laravel_user
-        DB_PASSWORD=laravel_pass
-    5. アプリケーションキーの作成
-        php artisan key:generate
-    6. ストレージリンクの作成
-        php artisan storage:link
-        ※ 本リポジトリには商品画像・プロフィール画像を `storage/app/public` に同梱済みです。
-    7. マイグレーション・シーディングの実行
-        php artisan migrate --seed
-        ※ 既に php artisan migrate --seed 済みの環境で再実行して重複エラーが出る場合はphp artisan migrate:fresh --seed（コンテナ内）を実行してください。すべてのテーブルが再作成されます。
+3. Composerパッケージをインストール
+    ```bash
+   composer install
+   ```
+4. .env.example をコピーして .env にリネーム
+    ```bash
+    cp .env.example .env
+    ```
+5. .env のデータベース接続設定を修正
+    ```bash
+    DB_CONNECTION=mysql
+    DB_HOST=mysql
+    DB_PORT=3306
+    DB_DATABASE=laravel
+    DB_USERNAME=sail
+    DB_PASSWORD=password
+    ```
+6. Dockerコンテナをビルド＆起動
+    ```bash
+    ./vendor/bin/sail up -d --build
+    ```
+    ※ 既存のDockerコンテナやDBデータが残っている状態で再構築する場合は、
+    以下を実行してから手順 6（コンテナ起動）に進んでください。
+    ```bash
+    ./vendor/bin/sail down -v
+    ```
+7. アプリケーションキーの作成
+    ```bash
+    ./vendor/bin/sail artisan key:generate
+    ```
+8. ストレージリンクの作成
+    ```bash
+    ./vendor/bin/sail artisan storage:link
+    ```
+9. マイグレーション・シーディングの実行
+    ```bash
+    ./vendor/bin/sail artisan migrate --seed
+    ```
 
 #### メール送信（開発環境用）
 本プロジェクトでは開発用に MailHog を使用しています。  
@@ -57,8 +60,18 @@ docker compose -f docker-compose.yml -f docker-compose.mac.yml up -d
 
 - MailHog: http://localhost:8025
 
-※ `.env` で `MAIL_HOST=mailhog` が指定されている必要があります。
-
+.env の設定（Sail 既定）
+    ```bash
+    MAIL_MAILER=smtp
+    MAIL_HOST=mailpit
+    MAIL_PORT=1025
+    MAIL_USERNAME=null
+    MAIL_PASSWORD=null
+    MAIL_ENCRYPTION=null
+    MAIL_FROM_ADDRESS="noreply@example.com"
+    MAIL_FROM_NAME="${APP_NAME}"
+    ```
+※ MailHog を使う場合は MAIL_HOST=mailhog に変更し、docker-compose に mailhog サービスを追加してください。
 
 ### フロントエンドビルド（Vite）
 このプロジェクトは Laravel 10 + Vite を使用しています。初回セットアップ時には以下の手順を実行してください。
@@ -113,11 +126,6 @@ docker compose -f docker-compose.yml -f docker-compose.mac.yml up -d
 | 正内正       | [user1@example.com](mailto:user1@example.com) | masa0000 | アイコン：banana.png     |
 | 胡麻斑ごま     | [user2@example.com](mailto:user2@example.com) | goma0000 | アイコン：grapes.png     |
 | 正内小正      | [user3@example.com](mailto:user3@example.com) | komasa00 | アイコン：kiwi.png       |
-| ウォーレンケアンズ | [user4@example.com](mailto:user4@example.com) | warlen00 | アイコン：melon.png      |
-| 氷見野ペン     | [user5@example.com](mailto:user5@example.com) | pen00000 | アイコン：muscat.png     |
-| 南川野今子     | [user6@example.com](mailto:user6@example.com) | ima00000 | アイコン：peach.png      |
-| 漢田虎男      | [user7@example.com](mailto:user7@example.com) | torao000 | アイコン：pineapple.png  |
-| 熊田くま夫     | [user8@example.com](mailto:user8@example.com) | kumao000 | アイコン：strawberry.png |
 
     ※ 全ユーザーに対してメール認証は既に完了済みの状態です（email_verified_at 設定済み）。
     ※ 住所・建物名はすべて架空の値で統一されています。
@@ -131,3 +139,20 @@ docker compose -f docker-compose.yml -f docker-compose.mac.yml up -d
 - コメント機能（商品ごと）
 - マイページ（プロフィール編集、出品/購入商品一覧）
 - 商品画像 / プロフィール画像のアップロード（ストレージ保存）
+
+## 修正履歴
+- 模擬案件１件目の講評を踏まえ、下記の修正を行いました。
+  - Docker 環境を Laravel Sail ベースに統一  
+  - 商品画像をアップロードできるよう修正（物理ファイル管理対応）  
+  - PHPUnit を用いた各種機能テストを追加 (.env.testing含む)
+
+## 追加機能
+- 取引中商品の表示
+- 取引中商品のチャット機能
+- チャット未読件数バッジ表示（100件超は99+）
+
+## テスト実行方法
+以下のコマンドで機能テストを実行できます。
+```bash
+./vendor/bin/sail artisan test
+```
