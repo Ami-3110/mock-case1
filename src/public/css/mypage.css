@@ -5,7 +5,7 @@
 .profile-header {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 24px;
     width: 70%;
     height: 150px;
     margin: 10px 60px;
@@ -33,9 +33,25 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 620px;
-    position: relative;
-    margin-left: 50px;
+    flex: 1;
+    min-width: 0;
+}
+
+.user-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.stars {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.stars img {
+    width: 20px;
+    height: 20px;
 }
 
 .profile-left {
@@ -48,11 +64,9 @@
 }
 
 .profile-right {
-    position: absolute;
-    right: -110px;
-    top: 50%;
-    transform: translateY(-50%);
+    margin-left: auto;
 }
+
 
 .edit-profile-btn {
     display: inline-block;

@@ -8,24 +8,41 @@
 
 {{-- 上段プロフィールエリア --}}
 <div class="profile-header">
-    <div class="profile-image-wrapper">
-      @if ($user->userProfile && $user->userProfile->profile_image)
-        <img src="{{ Storage::disk('public')->url($user->userProfile->profile_image ?? 'user_images/default.png') }}" alt="{{ $user->user_name }}" class="profile-image"/>
-      @endif
+  <div class="profile-image-wrapper">
+    @if ($user->userProfile && $user->userProfile->profile_image)
+      <img
+        src="{{ Storage::disk('public')->url($user->userProfile->profile_image ?? 'user_images/default.png') }}"
+        alt="{{ $user->user_name }}"
+        class="profile-image"
+      />
+    @endif
+  </div>
+
+  <div class="profile-info">
+    {{-- 左：ユーザー名＋星（縦積み） --}}
+    <div class="user-meta">
+      <h2 class="username">{{ $user->user_name }}</h2>
+      <div class="stars" aria-label="評価">
+        @php
+          $filledStars = isset($filledStars) ? (int)$filledStars : (int)($ratingAvgRounded ?? 0);
+        @endphp
+        @for ($i = 1; $i <= 5; $i++)
+          <img
+            src="{{ asset('images/' . ($i <= $filledStars ? 'Star1.png' : 'Star0.png')) }}"
+            alt=""
+            width="18" height="18"
+          >
+        @endfor
+      </div>
     </div>
 
-    <div class="profile-info">
-        <div class="profile-left">
-            <h2 class="username">{{ $user->user_name }}</h2>
-        </div>
-        @if(!is_null($ratingAvgRounded))
-            <div class="rating">評価平均：{{ $ratingAvgRounded }} / 5</div>
-        @endif
-        <div class="profile-right">
-            <a href="{{ route('mypage.edit') }}" class="edit-profile-btn">プロフィールを編集</a>
-        </div>
+    {{-- 右：編集ボタン --}}
+    <div class="profile-right">
+      <a href="{{ route('mypage.edit') }}" class="edit-profile-btn">プロフィールを編集</a>
     </div>
+  </div>
 </div>
+
   {{-- タブメニュー（リンクだけ） --}}
 <div class="tabs">
     <a href="?tab=sell"     class="tab {{ $tab === 'sell' ? 'active' : '' }}">出品した商品</a>
@@ -87,7 +104,7 @@
       </div>
 
     @elseif ($tab === 'trading')
-        <div class="trade-list">
+        <div class="product-list trade-list">
             @forelse($tradingItems as $trade)
                 @php $unread = ($unreadCounts[$trade->id] ?? 0); @endphp
                 <div class="product-card has-badge" data-trade-id="{{ $trade->id }}">

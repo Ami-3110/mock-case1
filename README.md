@@ -13,8 +13,9 @@ coachtechフリマ
 2. リポジトリをクローン  
    ```bash
    git clone git@github.com:Ami-3110/mock-case1.git
-   cd mock-case1
+   cd mock-case1/src
    ```
+    ※ このプロジェクトはアプリ本体が src/ に配置されています。以降のコマンドはすべて src/ 内で実行してください。
 3. Composerパッケージをインストール
     ```bash
    composer install
@@ -36,8 +37,7 @@ coachtechフリマ
     ```bash
     ./vendor/bin/sail up -d --build
     ```
-    ※ 既存のDockerコンテナやDBデータが残っている状態で再構築する場合は、
-    以下を実行してから手順 6（コンテナ起動）に進んでください。
+    ※ 既存のDockerコンテナやDBデータが残っている状態で再構築する場合は、以下を実行してから手順 6（コンテナ起動）に進んでください。
     ```bash
     ./vendor/bin/sail down -v
     ```
