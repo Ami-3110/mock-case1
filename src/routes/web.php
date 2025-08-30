@@ -12,6 +12,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\TradeController;
+use App\Http\Controllers\TradeMessageController;
 use App\Http\Controllers\TradeCompleteController;
 use App\Http\Controllers\TradeRatingController;
 
@@ -78,17 +79,17 @@ use App\Http\Controllers\TradeRatingController;
         Route::get('/trades/{trade}', [TradeController::class, 'show'])->name('trades.show');
 
         Route::middleware('auth')->group(function () {
-            Route::get('/trades/{trade}', [\App\Http\Controllers\TradeController::class, 'show'])->name('trades.show');
+            Route::get('/trades/{trade}', [TradeController::class, 'show'])->name('trades.show');
 
             // チャット投稿・編集・削除
-            Route::post('/trades/{trade}/messages', [\App\Http\Controllers\TradeMessageController::class, 'store'])->name('chat.store');
-            Route::patch('/messages/{message}', [\App\Http\Controllers\TradeMessageController::class, 'update'])->name('chat.update');
-            Route::delete('/messages/{message}', [\App\Http\Controllers\TradeMessageController::class, 'destroy'])->name('chat.destroy');
+            Route::post('/trades/{trade}/messages', [TradeMessageController::class, 'store'])->name('chat.store');
+            Route::patch('/messages/{message}', [TradeMessageController::class, 'update'])->name('chat.update');
+            Route::delete('/messages/{message}', [TradeMessageController::class, 'destroy'])->name('chat.destroy');
 
             // 取引完了（ダミーでもOK・既存あれば不要）
-            Route::post('/trades/{trade}/complete', [\App\Http\Controllers\TradeCompleteController::class, 'store'])->name('trade.complete');
+            Route::post('/trades/{trade}/complete', [TradeCompleteController::class, 'store'])->name('trade.complete');
             // 評価投稿（購入者→出品者、出品者→購入者 共通）
-            Route::post('/trades/{trade}/ratings', [\App\Http\Controllers\TradeRatingController::class, 'store'])->name('trade.ratings.store');
+            Route::post('/trades/{trade}/ratings', [TradeRatingController::class, 'store'])->name('trade.ratings.store');
 
         });
 

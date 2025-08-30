@@ -1,6 +1,5 @@
 <?php
 
-// app/Http/Controllers/TradeMessageController.php
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TradeMessageRequest;
@@ -12,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
 
 class TradeMessageController extends Controller
 {
-    // 投稿（US003: FN006/007/008/009）
+    // 投稿
     public function store(TradeMessageRequest $request, Trade $trade)
     {
         $user = auth()->user();
@@ -42,22 +41,38 @@ class TradeMessageController extends Controller
         return back();
     }
 
-    // 編集（US004: FN010）
+    // 編集
     public function update(TradeMessageRequest $request, TradeMessage $message)
     {
         $user = auth()->user();
         if ($message->user_id !== $user->id) abort(403);
 
-        // 本文のみ必須仕様なので、画像差替えは任意。最小実装は本文更新のみ。
-        $message->update(['body' => $request->input('body')]);
+        $data = [
+            'body' => $request->input('body'),
+        ];
 
-        // 紐づく取引の updated_at を更新
+        // 画像削除指定
+        if ($request->boolean('remove_image') && $message->image_path) {
+            \Storage::disk('public')->delete($message->image_path);
+            $data['image_path'] = null;
+        }
+
+        // 新しい画像が来たら差し替え
+        if ($request->hasFile('image')) {
+            if ($message->image_path) {
+                \Storage::disk('public')->delete($message->image_path);
+            }
+            $data['image_path'] = $request->file('image')->store('trade_messages', 'public');
+        }
+
+        $message->update($data);
+
         $message->trade->touch();
 
         return back();
     }
 
-    // 削除（US004: FN011）
+    // 削除
     public function destroy(TradeMessage $message)
     {
         $user = auth()->user();

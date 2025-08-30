@@ -1,6 +1,5 @@
 :root {
     --header-h: 60px;
-    /* ヘッダー高さ。app2の.headerがpadding 16pxなので大体80px前後 */
 }
 
 html,
@@ -8,18 +7,15 @@ body {
     height: 100%;
 }
 
-/* フルブリード化（中央寄せ解除して画面幅いっぱいに） */
 .trade-fullbleed {
     margin-left: calc(50% - 50vw);
     margin-right: calc(50% - 50vw);
     width: 100vw;
 }
 
-/* 2カラムをヘッダー直下から敷き詰める */
 .trade-layout {
     display: grid;
     grid-template-columns: 1fr 4fr;
-    /* 左1/5, 右4/5 */
     height: calc(100vh - var(--header-h));
 }
 
@@ -28,10 +24,8 @@ body {
     background: #868686;
     color: #fff;
     padding: 16px 12px;
-    /* 中身の余白だけ残す */
     margin: 0;
     height: 100%;
-    /* 親（trade-layout）の高さにフィット */
 }
 
 .sidebar-head {
@@ -181,11 +175,9 @@ body {
     padding: 12px 4px 8px;
 }
 
-/* --- チャット行のベース --- */
 .chat-row {
     display: flex;
     align-items: flex-start;
-    /* 上端を揃える（ズレ防止） */
     gap: 10px;
     margin: 14px 0;
 }
@@ -194,50 +186,34 @@ body {
     justify-content: flex-end;
 }
 
-/* --- 名前の行＋バブルを縦積み --- */
 .bubble-wrap {
     display: flex;
-    /* ← 追加 */
     flex-direction: column;
-    /* 名前 → バブル → 操作 で縦積み */
     align-items: flex-start;
-    /* 左メッセージは左寄せ */
     max-width: 72%;
 }
 
 .chat-row.right .bubble-wrap {
     align-items: flex-end;
-    /* 右メッセージは右寄せ */
     text-align: right;
 }
 
-/* --- ユーザー名はアイコンの横の1行、その下に確実に改行してバブル --- */
 .bubble-wrap .name {
     display: block;
-    /* ブロック化＝強制改行 */
     font-weight: 700;
     line-height: 1.2;
     margin: 0 0 6px;
-    /* 名前の下に余白 */
 }
 
-.chat-row.right .name {
-    text-align: right;
-}
-
-/* --- バブル --- */
 .bubble {
     background: #D9D9D9;
     border-radius: 5px;
     padding: 10px 12px;
     display: inline-block;
-    /* テキスト長に応じて伸縮 */
     text-align: left;
-    /* 右寄せ時も中身は左揃え */
     max-width: 100%;
 }
 
-/* --- 画像付きメッセージの余白調整 --- */
 .msg-image img {
     max-width: 320px;
     border-radius: 5px;
@@ -250,39 +226,37 @@ body {
     word-break: break-word;
 }
 
-/* --- 操作リンク（編集/削除）は常に1行で右端寄せ --- */
 .ops {
-    margin-top: 6px;
+    margin-top: 4px;
     display: flex;
-    /* 横並び */
-    gap: 12px;
+    gap: 5px;
     justify-content: flex-end;
     align-self: flex-end;
-    /* バブル幅に追従して右端に寄る */
+    align-items: center;
     white-space: nowrap;
-    /* 2行折返しを防止 */
 }
 
-.ops .inline {
-    display: inline;
-}
-
-/* ← Bladeのformに付いてる .inline を実体化 */
 .op-link {
+    appearance: none;
+    -webkit-appearance: none;
     background: none;
-    border: none;
+    border: 0;
     color: #5F5F5F;
     font-size: 12px;
-    cursor: pointer;
-    padding: 0;
-    line-height: 1;
+    padding: 0 5px;
+    height: 20px;
+    line-height: 20px;
+    display: inline-block;
+    vertical-align: middle;
 }
 
-.op-link.danger {
-    color: #5F5F5F;
+/* チャット編集 */
+.edit-form {
+    margin-top: 8px;
 }
 
-/* 送信エリア */
+
+/* 入力フォーム */
 .composer {
     margin-top: 8px;
     flex-shrink: 0;
@@ -304,7 +278,7 @@ body {
     flex: 1;
     border: 1px solid #5F5F5F;
     border-radius: 6px;
-    padding: 10px 12px;
+    padding: 5px 8px;
     color: #5F5F5F;
 }
 
@@ -337,6 +311,7 @@ body {
     height: 100%;
     object-fit: contain;
 }
+
 
 .modal-backdrop {
     position: fixed;
