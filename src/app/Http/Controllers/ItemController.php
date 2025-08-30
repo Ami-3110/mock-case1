@@ -41,7 +41,6 @@ class ItemController extends Controller
             if (!auth()->check()) {
                 $products = collect();
             } else {
-                // いいね済み商品のIDを取得して Product 側で揃える（Likeコレクション混在をやめる）
                 $productIds = auth()->user()->likes()->pluck('product_id');
 
                 $products = \App\Models\Product::query()
@@ -71,12 +70,10 @@ class ItemController extends Controller
     {
         $keyword = $request->input('keyword');
 
-        // ★ DB側もケース無視へ（各ドライバで挙動差が出にくい書き方）
         $kw = $keyword ? mb_strtolower($keyword, 'UTF-8') : null;
 
         $products = Product::query()
             ->when($kw, function ($q) use ($kw) {
-                // LOWER(product_name) LIKE %lower(keyword)%
                 $q->whereRaw('LOWER(product_name) LIKE ?', ['%'.$kw.'%']);
             })
             ->when(auth()->check(), function ($q) {

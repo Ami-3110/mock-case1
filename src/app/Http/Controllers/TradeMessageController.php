@@ -16,12 +16,10 @@ class TradeMessageController extends Controller
     {
         $user = auth()->user();
 
-        // 当事者チェック
         if ($trade->buyer_id !== $user->id && $trade->seller_id !== $user->id) {
             abort(403);
         }
 
-        // 画像保存（public disk）
         $path = null;
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('trade_messages', 'public');
@@ -34,10 +32,8 @@ class TradeMessageController extends Controller
             'image_path' => $path,
         ]);
 
-        // 並び替え用に updated_at をタッチ（FN004）
         $trade->touch();
 
-        // 入力欄は送信成功時は空でOK。戻るだけ
         return back();
     }
 
@@ -51,13 +47,11 @@ class TradeMessageController extends Controller
             'body' => $request->input('body'),
         ];
 
-        // 画像削除指定
         if ($request->boolean('remove_image') && $message->image_path) {
             \Storage::disk('public')->delete($message->image_path);
             $data['image_path'] = null;
         }
 
-        // 新しい画像が来たら差し替え
         if ($request->hasFile('image')) {
             if ($message->image_path) {
                 \Storage::disk('public')->delete($message->image_path);
@@ -78,7 +72,6 @@ class TradeMessageController extends Controller
         $user = auth()->user();
         if ($message->user_id !== $user->id) abort(403);
 
-        // 画像があれば削除
         if ($message->image_path) {
             Storage::disk('public')->delete($message->image_path);
         }

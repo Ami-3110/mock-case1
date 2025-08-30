@@ -29,9 +29,6 @@ class MypageController extends Controller
         $unreadCounts  = [];
         $totalUnread   = 0;
 
-        // -------------------------------------
-        // 1) タブごとのデータ本体
-        // -------------------------------------
         if ($tab === 'sell') {
             $sellItems = Product::where('user_id', $user->id)
                 ->withExists(['trades as has_active_trade' => function ($q) {
@@ -93,7 +90,6 @@ class MypageController extends Controller
         $ratingAvg = $ratingAvg ? round($ratingAvg, 1) : 0; 
         $filledStars = (int) round($ratingAvg);
 
-        // ビュー返却（どのタブでも未読総数が埋まっている）
         return view('mypage.index', compact(
             'user',
             'ratingAvg',
@@ -106,8 +102,6 @@ class MypageController extends Controller
             'totalUnread'
         ));
     }
-
-
 
     // プロフィール編集画面
     public function edit(){

@@ -1,6 +1,5 @@
 <?php
 
-// app/Models/Trade.php
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -15,6 +14,5 @@ class Trade extends Model
     public function seller(): BelongsTo { return $this->belongsTo(User::class, 'seller_id'); }
     public function messages(): HasMany { return $this->hasMany(TradeMessage::class); }
 
-    // 新着順にしたいとき用
     public function scopeLatestUpdate($q){ return $q->orderByDesc('updated_at'); }
 }

@@ -89,7 +89,6 @@ class PurchaseController extends Controller
     {
         $validated = $request->validated();
 
-        // セッション保存（購入画面とStripe遷移で利用）
         session(['shipping_address_' . $item_id => [
             'ship_postal_code' => $validated['ship_postal_code'] ?? null,
             'ship_address'     => $validated['ship_address'] ?? null,
@@ -99,13 +98,11 @@ class PurchaseController extends Controller
         return redirect()->route('purchase.showForm', ['item_id' => $item_id]);
     }
 
-
 // Stripe
     public function confirm(PurchaseRequest $request, $item_id)
     {
         $item = Product::findOrFail($item_id);
 
-        // 住所が未設定なら差し戻し
         $shipping = session('shipping_address_' . $item_id);
         if (!$shipping) {
             return redirect()
@@ -113,7 +110,6 @@ class PurchaseController extends Controller
                 ->withErrors(['ship_address' => '配送先を先に登録してください。']);
         }
 
-        // 二重購入ガード（Purchase と Trade 両方確認）
         $alreadyPurchased = Purchase::where('product_id', $item->id)->exists()
             || Trade::where('product_id', $item->id)->exists();
         if ($alreadyPurchased) {
@@ -122,10 +118,8 @@ class PurchaseController extends Controller
                 ->withErrors(['purchase' => 'この商品はすでに購入されています。']);
         }
 
-        // ★ PurchaseRequest がここで検証済み
         $paymentMethod = $request->validated()['payment_method'];
 
-        // 購入レコード作成
         $purchase = Purchase::create([
             'user_id'          => auth()->id(),
             'product_id'       => $item->id,
@@ -136,7 +130,6 @@ class PurchaseController extends Controller
             'purchased_at'     => now(),
         ]);
 
-        // Tradeレコード作成（取引中商品タブに出す用）
         Trade::create([
             'product_id' => $item->id,
             'buyer_id'   => auth()->id(),
@@ -144,7 +137,6 @@ class PurchaseController extends Controller
             'status'     => 'trading',
         ]);
 
-        // 住所セッション掃除
         session()->forget('shipping_address_' . $item_id);
 
         // Stripe決済（本番のみ）

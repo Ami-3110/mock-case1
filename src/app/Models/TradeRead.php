@@ -1,6 +1,5 @@
 <?php
 
-// app/Models/TradeRead.php
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;

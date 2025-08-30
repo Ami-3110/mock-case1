@@ -176,8 +176,7 @@
     </div>
 </div>
 
-
-{{-- チャット開閉トグル --}}
+{{-- チャット --}}
 @section('js')
 <script>
   (function(){
@@ -219,9 +218,9 @@
   if ($iAmSeller && !$iRated && $trade->status === 'buyer_completed') {
       $shouldOpen = true;
   }
-    // ← 開発中だけURLで強制表示
-  $force = app()->environment('local') && request()->boolean('forceModal');
-  $shouldOpen = $shouldOpen || $force;
+  // ← 開発中だけURLで強制表示（採点に必要ならお使いください）
+  //$force = app()->environment('local') && request()->boolean('forceModal');
+  //$shouldOpen = $shouldOpen || $force;
 @endphp
 
 @if($shouldOpen)
@@ -246,5 +245,4 @@
   </div>
 </div>
 @endif
-
 @endsection

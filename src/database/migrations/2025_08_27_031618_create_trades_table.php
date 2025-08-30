@@ -11,7 +11,7 @@ return new class extends Migration {
             $t->foreignId('product_id')->constrained()->cascadeOnDelete();
             $t->foreignId('buyer_id')->constrained('users')->cascadeOnDelete();
             $t->foreignId('seller_id')->constrained('users')->cascadeOnDelete();
-            $t->string('status')->default('trading'); // trading|completed など
+            $t->string('status')->default('trading');
             $t->timestamps();
 
             $t->index(['buyer_id', 'seller_id']);

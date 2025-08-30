@@ -51,7 +51,7 @@
     <a href="?tab=trading"  class="tab {{ $tab === 'trading' ? 'active' : '' }}">  
     取引中の商品
         @if(($totalUnread ?? 0) > 0)
-        <span class="tab-badge">{{ $totalUnread > 99 ? '99+' : $totalUnread }}</span>
+            <span class="tab-badge">{{ $totalUnread > 99 ? '99+' : $totalUnread }}</span>
         @endif
     </a>
 </div>
@@ -106,22 +106,22 @@
         <div class="product-list trade-list">
             @forelse($tradingItems as $trade)
                 @php $unread = ($unreadCounts[$trade->id] ?? 0); @endphp
-                    <div class="product-card has-badge" data-trade-id="{{ $trade->id }}">
-                        @if($unread > 0)
-                            <span class="badge-unread">{{ $unread > 99 ? '99+' : $unread }}</span>
-                        @endif
-                        <div class="product-row">
-                            <a href="{{ route('trades.show', $trade) }}" class="btn-chat">
-                                <img src="{{ asset('storage/' . $trade->product->product_image) }}" class="product-image" alt="商品画像">
-                            </a>
-                            <div class="product-info-row">
-                                <div class="product-name">
-                                {{ $trade->product->product_name }}
-                                </div>
+                <div class="product-card has-badge" data-trade-id="{{ $trade->id }}">
+                    @if($unread > 0)
+                        <span class="badge-unread">{{ $unread > 99 ? '99+' : $unread }}</span>
+                    @endif
+                    <div class="product-row">
+                        <a href="{{ route('trades.show', $trade) }}" class="btn-chat">
+                            <img src="{{ asset('storage/' . $trade->product->product_image) }}" class="product-image" alt="商品画像">
+                        </a>
+                        <div class="product-info-row">
+                            <div class="product-name">
+                            {{ $trade->product->product_name }}
                             </div>
                         </div>
                     </div>
-                @empty
+                </div>
+            @empty
                 <p class="empty-message">取引中の商品はありません。</p>
             @endforelse
         </div>

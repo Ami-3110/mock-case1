@@ -250,11 +250,9 @@ body {
     vertical-align: middle;
 }
 
-/* チャット編集 */
 .edit-form {
     margin-top: 8px;
 }
-
 
 /* 入力フォーム */
 .composer {
@@ -336,7 +334,6 @@ body {
     padding: 10px 15px;
     box-sizing: border-box;
     color: #5F5F5F;
-    /* 親がflexでも基本これで幅いっぱい */
 }
 
 .line {
@@ -354,10 +351,8 @@ body {
     justify-content: center;
     padding: 15px 15px;
     gap:15px;
-    /* ←見た目を逆順に並べ直す */
 }
 
-/* 以降は同じ */
 .stars input[type="radio"] {
     display: none;
 }
