@@ -1,6 +1,5 @@
 <?php
 
-// app/Http/Controllers/TradeRatingController.php
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TradeRatingRequest;
@@ -14,7 +13,6 @@ class TradeRatingController extends Controller
         $user = auth()->user();
         if ($trade->buyer_id !== $user->id && $trade->seller_id !== $user->id) abort(403);
 
-        // 既に自分が評価済みならスキップ（連打対策）
         if (TradeRating::where('trade_id',$trade->id)->where('rater_id',$user->id)->exists()) {
             return redirect()->route('items.index');
         }
@@ -28,14 +26,12 @@ class TradeRatingController extends Controller
             'score'    => (int)$request->input('score'),
         ]);
 
-        // 双方評価済みなら completed へ
         $buyerRated  = TradeRating::where('trade_id',$trade->id)->where('rater_id',$trade->buyer_id)->exists();
         $sellerRated = TradeRating::where('trade_id',$trade->id)->where('rater_id',$trade->seller_id)->exists();
         if ($buyerRated && $sellerRated) {
             $trade->update(['status' => 'completed']);
         }
 
-        // 評価送信後は商品一覧へ（FN014）
         return redirect()->route('items.index')->with('rated', true);
     }
 }

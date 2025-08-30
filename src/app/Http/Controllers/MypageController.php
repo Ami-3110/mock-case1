@@ -16,7 +16,6 @@ class MypageController extends Controller
     // マイページ画面
     public function index(Request $request)
     {
-        // 未ログイン防御（ルートでauthミドルウェアでもOK）
         $user = auth()->user();
         if (!$user) {
             return redirect()->route('login');
@@ -24,18 +23,20 @@ class MypageController extends Controller
 
         $tab = $request->string('tab')->lower()->value() ?: 'sell';
 
-        // 初期化
         $sellItems     = collect();
         $buyItems      = collect();
         $tradingItems  = collect();
-        $unreadCounts  = [];   // 一覧カード用（tradingタブの時だけ使う）
-        $totalUnread   = 0;    // タブ横の総未読（常に算出）
+        $unreadCounts  = [];
+        $totalUnread   = 0;
 
         // -------------------------------------
         // 1) タブごとのデータ本体
         // -------------------------------------
         if ($tab === 'sell') {
             $sellItems = Product::where('user_id', $user->id)
+                ->withExists(['trades as has_active_trade' => function ($q) {
+                    $q->whereIn('status', ['trading','buyer_completed','completed']);
+                }])
                 ->latest()
                 ->get();
         }
@@ -60,26 +61,19 @@ class MypageController extends Controller
                 ->get();
         }
 
-        // -------------------------------------
-        // 2) 未読総数（totalUnread）は常に算出
-        //    tradingタブ以外でもバッジを出すため
-        // -------------------------------------
-        // まず、未読集計用に「自分の進行中の全トレードID」を取得
         $tradesForUnread = $tab === 'trading'
-            ? $tradingItems->pluck('id')                               // 既に取得していれば再利用
+            ? $tradingItems->pluck('id')
             : Trade::where('status', 'trading')
                 ->where(fn($q) => $q->where('buyer_id', $user->id)
                                     ->orWhere('seller_id', $user->id))
-                ->pluck('id');                                         // IDだけで軽量
+                ->pluck('id');
 
         if ($tradesForUnread->isNotEmpty()) {
-            // 自分の既読ポインタを取得し、trade_id => TradeRead の形に
             $reads = TradeRead::whereIn('trade_id', $tradesForUnread)
                 ->where('user_id', $user->id)
                 ->get()
                 ->keyBy('trade_id');
 
-            // 各トレードの未読件数を数える
             foreach ($tradesForUnread as $tradeId) {
                 $lastReadId = $reads->get($tradeId)?->last_read_message_id;
 
@@ -87,7 +81,6 @@ class MypageController extends Controller
                     ->when($lastReadId, fn($q) => $q->where('id', '>', $lastReadId))
                     ->count();
 
-                // tradingタブ表示中のみ、各カード用の未読数も配列に入れる
                 if ($tab === 'trading') {
                     $unreadCounts[$tradeId] = $cnt;
                 }
@@ -96,7 +89,7 @@ class MypageController extends Controller
             }
         }
 
-        $ratingAvg = \App\Models\TradeRating::where('ratee_id', $user->id)->avg('score'); // float|null
+        $ratingAvg = \App\Models\TradeRating::where('ratee_id', $user->id)->avg('score');
         $ratingAvg = $ratingAvg ? round($ratingAvg, 1) : 0; 
         $filledStars = (int) round($ratingAvg);
 

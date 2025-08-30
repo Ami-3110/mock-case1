@@ -16,35 +16,28 @@
         @endif
     </div>
     <div class="product-list">
-        @foreach ($products as $item)
-            @if ($activeTab === 'mylist')
-                @php
-                    $product = $item->product;
-                @endphp
-            @else
-                @php
-                    $product = $item;
-                @endphp
-            @endif
-    
-            @if ($product)
+        @foreach ($products as $product)
             <div class="product-card">
-                @if (!$product->is_sold)
-                    <a href="{{ route('item.show', ['item_id' => $product->id]) }}">
-                @endif            
-                    <img src="{{ Storage::disk('public')->url($product->product_image) }}" alt="商品画像" class="product-image">
-                    </a>         
-                    <div class="product-info-row">
-                        <p class="product-name">{{ $product->product_name }}</p>            
-                        @if ($product->is_sold)
-                            <span class="sold-label">Sold</span>
-                        @endif
-                    </div>            
-                @if (!$product->is_sold)
-                @endif
-            </div>            
+            @if (!$product->has_active_trade)
+                <a href="{{ route('item.show', ['item_id' => $product->id]) }}">
             @endif
+
+                <img src="{{ Storage::disk('public')->url($product->product_image) }}"
+                    alt="商品画像" class="product-image">
+
+            @if (!$product->has_active_trade)
+                </a>
+            @endif
+
+            <div class="product-info-row">
+                <p class="product-name">{{ $product->product_name }}</p>
+                @if ($product->has_active_trade)
+                <span class="sold-label">Sold</span>
+                @endif
+            </div>
+            </div>
         @endforeach
-    </div>    
+    </div>
+
 </div>
 @endsection

@@ -1,5 +1,5 @@
 <?php
-// app/Http/Controllers/TradeCompleteController.php
+
 namespace App\Http\Controllers;
 
 use App\Models\Trade;

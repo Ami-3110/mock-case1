@@ -29,22 +29,30 @@ class ItemController extends Controller
         $keyword = $request->input('keyword');
 
         if ($tab === 'recommend') {
-            $products = $userId
-                ? Product::where('user_id', '!=', $userId)->get()
-                : Product::all();
+            $products = \App\Models\Product::query()
+                ->when($userId, fn($q) => $q->where('user_id', '!=', $userId))
+                ->withExists(['trades as has_active_trade' => function ($q) {
+                    $q->whereIn('status', ['trading', 'buyer_completed', 'completed']);
+                }])
+                ->latest()
+                ->get();
 
         } elseif ($tab === 'mylist') {
             if (!auth()->check()) {
                 $products = collect();
             } else {
-                $likes = auth()->user()->likes()->with('product')->get();
+                // いいね済み商品のIDを取得して Product 側で揃える（Likeコレクション混在をやめる）
+                $productIds = auth()->user()->likes()->pluck('product_id');
 
-                $products = $likes->filter(function ($like) use ($userId, $keyword) {
-                    $product = $like->product;
-                    return $product
-                        && $product->user_id !== $userId
-                        && $this->matchesKeyword($product->product_name, $keyword);
-                })->values();
+                $products = \App\Models\Product::query()
+                    ->whereIn('id', $productIds)
+                    ->where('user_id', '!=', $userId)
+                    ->when($keyword, fn($q) => $q->where('product_name', 'like', "%{$keyword}%"))
+                    ->withExists(['trades as has_active_trade' => function ($q) {
+                        $q->whereIn('status', ['trading', 'buyer_completed', 'completed']);
+                    }])
+                    ->latest()
+                    ->get();
             }
         } else {
             $products = collect();
@@ -55,7 +63,8 @@ class ItemController extends Controller
             'activeTab' => $tab,
             'keyword'   => $keyword,
         ]);
-    }
+}
+
 
     // 商品検索
     public function search(Request $request)

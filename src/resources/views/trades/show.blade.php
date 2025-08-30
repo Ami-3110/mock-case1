@@ -205,10 +205,10 @@
 
 {{-- 評価モーダル（自分が未評価のときだけ表示） --}}
 @php
-  $me = auth()->id();
-  $iAmBuyer  = $trade->buyer_id === $me;
-  $iAmSeller = $trade->seller_id === $me;
-  $iRated    = \App\Models\TradeRating::where('trade_id',$trade->id)->where('rater_id',$me)->exists();
+  $myID = auth()->id();
+  $iAmBuyer  = $trade->buyer_id === $myID;
+  $iAmSeller = $trade->seller_id === $myID;
+  $iRated    = \App\Models\TradeRating::where('trade_id',$trade->id)->where('rater_id',$myID)->exists();
 
   $shouldOpen = false;
   // 購入者：完了直後 or buyer_completedで未評価
@@ -219,24 +219,29 @@
   if ($iAmSeller && !$iRated && $trade->status === 'buyer_completed') {
       $shouldOpen = true;
   }
+    // ← 開発中だけURLで強制表示
+  $force = app()->environment('local') && request()->boolean('forceModal');
+  $shouldOpen = $shouldOpen || $force;
 @endphp
 
 @if($shouldOpen)
 <div class="modal-backdrop">
   <div class="modal">
-    <h3>取引相手を評価</h3>
+    <div class="rating">取引が完了しました。</div>
+    <div class="line"></div>
+    <div class="question">今回の取引相手はどうでしたか？</div>
     <form method="POST" action="{{ route('trade.ratings.store', $trade) }}">
       @csrf
-      <div class="stars">
-        <label><input type="radio" name="score" value="5" required>5</label>
-        <label><input type="radio" name="score" value="4">4</label>
-        <label><input type="radio" name="score" value="3">3</label>
-        <label><input type="radio" name="score" value="2">2</label>
-        <label><input type="radio" name="score" value="1">1</label>
-      </div>
-      <div class="actions">
-        <button type="submit" class="btn primary">評価を送信</button>
-      </div>
+        <div class="stars">
+            @for ($i = 5; $i >= 1; $i--)
+                <input type="radio" id="star{{ $i }}" name="score" value="{{ $i }}">
+                <label for="star{{ $i }}"></label>
+            @endfor
+        </div>
+        <div class="line"></div>
+        <div class="actions">
+            <button type="submit" class="btn primary">送信する</button>
+        </div>
     </form>
   </div>
 </div>
