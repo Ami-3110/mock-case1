@@ -38,7 +38,7 @@ class ID09_CommentPostTest extends TestCase
         $show = $this->get(route('item.show', ['item_id' => $product->id]));
         $show->assertSuccessful()
              ->assertSee(e('これはテストコメントです。'))
-             ->assertSee(e($user->name));
+             ->assertSee(e($user->user_name));
     }
 
     #[Test]

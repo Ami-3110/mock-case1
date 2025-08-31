@@ -21,7 +21,6 @@ class ProductFactory extends Factory
             'price' => $this->faker->numberBetween(1000, 100000),
             'description' => $this->faker->sentence(),
             'condition' => '良好',
-            'is_sold' => false,
         ];
     }
 }

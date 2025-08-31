@@ -54,11 +54,28 @@ class ID05_MyListIndexTest extends TestCase
     public function purchased_products_show_sold_badge_in_mylist()
     {
         // Arrange
-        $me = User::factory()->create();
+        $me     = \App\Models\User::factory()->create();
+        $seller = \App\Models\User::factory()->create();
+        $buyer  = \App\Models\User::factory()->create();
 
-        $sold  = Product::factory()->create(['is_sold' => true,  'product_name' => 'SoldInMyList']);
-        $other = Product::factory()->create(['is_sold' => false, 'product_name' => 'OtherInMyList']);
+        // 売れた（＝取引が trading / buyer_completed / completed のいずれか）
+        $sold = \App\Models\Product::factory()->create([
+            'user_id'      => $seller->id,
+            'product_name' => 'SoldInMyList',
+        ]);
+        \App\Models\Trade::factory()->create([
+            'product_id' => $sold->id,
+            'seller_id'  => $seller->id,
+            'buyer_id'   => $buyer->id,
+            'status'     => 'completed', // trading / buyer_completed / completed でも可
+        ]);
 
+        // 未売却
+        $other = \App\Models\Product::factory()->create([
+            'product_name' => 'OtherInMyList',
+        ]);
+
+        // どちらも「いいね」してマイリストに載せる
         \DB::table('likes')->insert([
             'user_id'    => $me->id,
             'product_id' => $sold->id,
@@ -74,14 +91,30 @@ class ID05_MyListIndexTest extends TestCase
 
         // Act
         $this->actingAs($me);
-        $res = $this->get(route('items.index', $this->mylistQuery));
+        $res = $this->get(route('items.index', ['tab' => 'mylist']));
 
         // Assert
-        $res->assertSuccessful();
-        $res->assertSee(e('SoldInMyList'));
-        $res->assertSee('sold');
-        $res->assertSee(e('OtherInMyList'));
+        $res->assertOk()
+            ->assertSee(e('SoldInMyList'))
+            ->assertSee(e('OtherInMyList'));
+
+        // “Sold” の誤検知を避けるため、商品名の近傍で判定
+        $html = $res->getContent();
+        $soldPos  = strpos($html, e('SoldInMyList'));
+        $otherPos = strpos($html, e('OtherInMyList'));
+
+        $this->assertNotFalse($soldPos, 'sold product name not found in HTML');
+        $this->assertNotFalse($otherPos, 'other product name not found in HTML');
+
+        $window = 400; // 商品カード内に収まる想定
+        $soldChunk  = substr($html, $soldPos, $window);
+        $otherChunk = substr($html, $otherPos, $window);
+
+        // ラベルは 'Sold' / 'SOLD' などどちらでもOKに（大文字小文字無視）
+        $this->assertTrue((bool)preg_match('/Sold/i', $soldChunk), 'Sold badge should appear near sold item.');
+        $this->assertFalse((bool)preg_match('/Sold/i', $otherChunk), 'Sold badge should not appear near unsold item.');
     }
+
 
     #[Test]
     public function my_own_products_are_hidden_in_mylist()

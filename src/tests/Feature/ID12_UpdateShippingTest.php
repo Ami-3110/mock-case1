@@ -55,11 +55,11 @@ class ID12_UpdateShippingTest extends TestCase
         $buyer  = $this->makeVerifiedUser();
         $seller = $this->makeVerifiedUser();
 
-        $item = Product::factory()->create([
+        $item = \App\Models\Product::factory()->create([
             'user_id'      => $seller->id,
             'product_name' => 'Purchased With Shipping',
             'price'        => 5000,
-            'is_sold'      => false,
+            // ★ is_sold は使わない
         ]);
 
         $this->actingAs($buyer);
@@ -71,14 +71,14 @@ class ID12_UpdateShippingTest extends TestCase
             'ship_building'    => 'テストマンション202',
         ];
         $this->post(route('purchase.updateAddress', ['item_id' => $item->id]), $payload)
-             ->assertStatus(302);
+            ->assertStatus(302);
 
-        // 2) 購入実行（testing 環境は thanks にリダイレクト）
+        // 2) 購入実行（thanksへ）
         $this->post(route('purchase.confirm', ['item_id' => $item->id]), [
-            'payment_method' => 'コンビニ払い', // ← バリデ in: に一致
+            'payment_method' => 'コンビニ払い',
         ])->assertRedirect(route('purchase.thanks'));
 
-        // 3) purchases に住所が紐づいて登録されている
+        // 3) purchases に配送先が保存されている
         $this->assertDatabaseHas('purchases', [
             'user_id'          => $buyer->id,
             'product_id'       => $item->id,
@@ -88,15 +88,9 @@ class ID12_UpdateShippingTest extends TestCase
             'ship_building'    => $payload['ship_building'],
         ]);
 
-        // 4) is_sold も true
-        $this->assertDatabaseHas('products', [
-            'id'      => $item->id,
-            'is_sold' => true,
-        ]);
-
-        // 5) マイページ購入一覧に表示
+        // 4) マイページ購入一覧に表示される
         $this->get(route('mypage.index', ['tab' => 'buy']))
-             ->assertSuccessful()
-             ->assertSee('Purchased With Shipping');
-    }
+            ->assertOk()
+            ->assertSee('Purchased With Shipping');
+}
 }

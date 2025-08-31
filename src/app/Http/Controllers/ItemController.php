@@ -62,7 +62,7 @@ class ItemController extends Controller
             'activeTab' => $tab,
             'keyword'   => $keyword,
         ]);
-}
+    }
 
 
     // 商品検索
@@ -117,7 +117,6 @@ class ItemController extends Controller
             'brand' => $request->brand,
             'description' => $request->description,
             'price' => $request->price,
-            'is_sold' => false,
         ]);
 
         $product->categories()->sync($request->category);

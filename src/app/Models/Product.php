@@ -18,7 +18,6 @@ class Product extends Model
         'condition',
         'description',
         'product_image',
-        'is_sold',
     ];
 
     public function user(){

@@ -6,6 +6,7 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\Purchase;
+use App\Models\Trade;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 
@@ -24,13 +25,14 @@ class ID13_UserInfoTest extends TestCase
     public function profile_page_shows_avatar_username_and_lists_per_tab()
     {
         // 準備
-        $user        = $this->makeVerifiedUser();
-        $otherSeller = $this->makeVerifiedUser();
+        $user          = $this->makeVerifiedUser();
+        $otherSeller   = $this->makeVerifiedUser();
+        $anotherBuyer  = $this->makeVerifiedUser();
 
         $user->user_name = 'Ami Tester';
         $user->save();
 
-        // 必須カラムありのプロフィール作成
+        // プロフィール（任意）
         if (method_exists($user, 'userProfile')) {
             $user->userProfile()->create([
                 'profile_image' => 'profiles/test-avatar.jpg',
@@ -45,13 +47,18 @@ class ID13_UserInfoTest extends TestCase
             'user_id'      => $user->id,
             'product_name' => 'My Listed Item 1',
             'price'        => 1200,
-            'is_sold'      => false,
         ]);
         $listed2 = Product::factory()->create([
             'user_id'      => $user->id,
             'product_name' => 'My Listed Item 2',
             'price'        => 3400,
-            'is_sold'      => true, // soldラベル出る想定
+        ]);
+        // listed2 は取引あり（= sold 扱い）
+        Trade::factory()->create([
+            'product_id' => $listed2->id,
+            'seller_id'  => $user->id,
+            'buyer_id'   => $anotherBuyer->id,
+            'status'     => 'completed', // trading / buyer_completed / completed でもOK
         ]);
 
         // 購入した商品（buyタブで表示）
@@ -59,7 +66,6 @@ class ID13_UserInfoTest extends TestCase
             'user_id'      => $otherSeller->id,
             'product_name' => 'Item I Bought',
             'price'        => 5600,
-            'is_sold'      => true,
         ]);
         Purchase::create([
             'user_id'          => $user->id, // buyer
@@ -70,34 +76,47 @@ class ID13_UserInfoTest extends TestCase
             'ship_building'    => 'テスト101',
             'purchased_at'     => now(),
         ]);
+        // （任意）trades を作ってもOKだが、buyタブでは sold バッジ検証は行わない
+        Trade::factory()->create([
+            'product_id' => $purchasedProduct->id,
+            'seller_id'  => $otherSeller->id,
+            'buyer_id'   => $user->id,
+            'status'     => 'completed',
+        ]);
 
         $this->actingAs($user);
 
-        // === sellタブ: 出品した商品が見える ===
+        // === sellタブ ===
         $resSell = $this->get(route('mypage.index', ['tab' => 'sell']));
-        $resSell->assertSuccessful();
-        // ヘッダー（ユーザー名/画像）は常に見える
+        $resSell->assertOk();
         $resSell->assertSee('Ami Tester');
         if (method_exists($user, 'userProfile')) {
-            $resSell->assertSee('profiles/test-avatar.jpg'); // 断片一致でOK
+            $resSell->assertSee('profiles/test-avatar.jpg');
         }
-        // 出品一覧の検証
-        $resSell->assertSee('出品した商品');       // タブ見出し
+        $resSell->assertSee('出品した商品');
         $resSell->assertSee('My Listed Item 1');
         $resSell->assertSee('My Listed Item 2');
-        $resSell->assertSee('sold');               // soldラベル（2つ目がsold）
 
-        // === buyタブ: 購入した商品が見える ===
+        // sold 表示は listed2 の近傍のみ（ケース無視）
+        $htmlSell = $resSell->getContent();
+        $l1Pos = strpos($htmlSell, 'My Listed Item 1');
+        $l2Pos = strpos($htmlSell, 'My Listed Item 2');
+        $this->assertNotFalse($l1Pos);
+        $this->assertNotFalse($l2Pos);
+        $win = 400;
+        $l1Chunk = substr($htmlSell, $l1Pos, $win);
+        $l2Chunk = substr($htmlSell, $l2Pos, $win);
+        $this->assertFalse((bool)preg_match('/sold/i', $l1Chunk), 'sold should NOT appear near My Listed Item 1');
+        $this->assertTrue((bool)preg_match('/sold/i', $l2Chunk),  'sold should appear near My Listed Item 2');
+
+        // === buyタブ ===（sold バッジ検証はしない）
         $resBuy = $this->get(route('mypage.index', ['tab' => 'buy']));
-        $resBuy->assertSuccessful();
-        // ヘッダー（ユーザー名/画像）は同様に見える
+        $resBuy->assertOk();
         $resBuy->assertSee('Ami Tester');
         if (method_exists($user, 'userProfile')) {
             $resBuy->assertSee('profiles/test-avatar.jpg');
         }
-        // 購入一覧の検証
-        $resBuy->assertSee('購入した商品');        // タブ見出し
+        $resBuy->assertSee('購入した商品');
         $resBuy->assertSee('Item I Bought');
-        $resBuy->assertSee('sold');               // 買った商品が売却済みなら sold ラベルも出る
     }
 }

@@ -4,9 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\{BelongsTo, HasMany};
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 
 class Trade extends Model
 {
+    use HasFactory;
+    
     protected $fillable = ['product_id','buyer_id','seller_id','status'];
 
     public function product(): BelongsTo { return $this->belongsTo(Product::class); }
