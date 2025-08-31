@@ -1,5 +1,5 @@
 <?php
-// database/migrations/2025_08_28_000020_create_trade_reads_table.php
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
