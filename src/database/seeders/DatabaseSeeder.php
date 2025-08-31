@@ -43,10 +43,6 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             ProductSeeder::class,
             ProductCategorySeeder::class,
-            LikeSeeder::class,
-            // TradeSeeder::class,
-            // TradeMessageSeeder::class,
-            // TradeRatingSeeder::class,
         ]);
     }
 }
