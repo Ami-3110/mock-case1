@@ -85,14 +85,18 @@ coachtechフリマ
    - Windowsの場合：  
      Node.js公式サイトからインストーラを利用
 
-2. Vite 開発サーバー起動（開発環境の場合）
+2. 依存パッケージをインストール
+   ```bash
+   npm install
+
+3. Vite 開発サーバー起動（開発環境の場合）
    ```bash
    npm run dev
 
    ```
    ※ ポート5173が他で使われていないことを確認してください
 
-3. 本番用ビルド  
+4. 本番用ビルド  
    ```bash
    npm run build
    ```
